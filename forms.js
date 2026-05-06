@@ -21,5 +21,15 @@ form.addEventListener('submit', function(event) {
         date: dateInput.value,
         type: typeInput.value
     };
+
+     
+    const currentData = JSON.parse(localStorage.getItem('transactions')) || [];
+    currentData.push(transaction);
+    localStorage.setItem('transactions', JSON.stringify(currentData));
+    console.log("Dados salvos no LocalStorage!", transaction);
+
+    form.reset(); 
+    alert("Transação salva com sucesso!");
     
 });
+
