@@ -15,5 +15,11 @@ form.addEventListener('submit', function(event) {
         return; 
     }
 
-  
+ const transaction = {
+        description: descriptionInput.value,
+        amount: Number(amountInput.value), 
+        date: dateInput.value,
+        type: typeInput.value
+    };
+    
 });
