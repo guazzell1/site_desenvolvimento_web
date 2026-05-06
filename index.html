@@ -50,8 +50,67 @@
                         <h3 id="card-expense">R$0,00</h3>
                     </div>
                 </div>
+                <div class="tabela-container">
+                    <div class="tabela-header">
+                        <h3>Transações Recentes</h3>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Descrição</th>
+                                <th>Categoria</th>
+                                <th>Data</th>
+                                <th>Valor</th>
+                                <th>Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody id="lista-transacoes"></tbody>
+                    </table>
+                </div>
             </div>
         </main>
+    </div>
+    <div id="modal-overlay">
+        <div id="modal-box">
+            <div class="modal-header">
+                <h3>Nova Transação</h3>
+                <button id="btn-fechar-modal">X</button>
+            </div>
+            <form id="tx-form">
+                <div class="tipo-selector">
+                    <button type="button" id="btn-despesa" class="tipo-btn ativo">Despesa</button>
+                    <button type="button" id="btn-receita" class="tipo-btn">Receita</button>
+                </div>
+
+                <label>Descrição</label>
+                <input type="text" id="input-descricao">
+
+                <label>Valor</label>
+                <input type="number" id="input-valor">
+
+                <label>Data</label>
+                <input type="date" id="input-data">
+
+                </select>
+                <label>Categoria</label>
+                <select id="input-categoria">
+                    <option value="moradia">Moradia</option>
+                    <option value="alimentacao">Alimentação</option>
+                    <option value="transporte">Transporte</option>
+                    <option value="lazer">Lazer</option>
+                    <option value="saude">Saúde</option>
+                    <option value="outros">Outros</option>
+                </select>
+
+                <div class="label-recorrente">
+                    <input type="checkbox" id="input-recorrente">
+                    <label for="input-recorrente">Transação recorrente <span>(mensal)</span></label>
+                </div>
+
+
+                <button type="submit" id="btn-salvar">Salvar Transação</button>
+            </form>
+        </div>
     </div>
     <script src="forms.js"></script>
 </body>
