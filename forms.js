@@ -1,35 +1,25 @@
 
-const form = document.querySelector('#transaction-form');
-const descriptionInput = document.querySelector('#description');
-const amountInput = document.querySelector('#amount');
-const dateInput = document.querySelector('#date');
-const typeInput = document.querySelector('#type');
+const modalOverlay = document.querySelector('#modal-overlay');
+const btnNovaTransacao = document.querySelector('.btn-nova-transacao');
+const btnFecharModal = document.querySelector('#btn-fechar-modal');
 
 
-form.addEventListener('submit', function(event) {
-  
-    event.preventDefault(); 
+const form = document.querySelector('#tx-form');
+const inputDescricao = document.querySelector('#input-descricao');
+const inputValor = document.querySelector('#input-valor');
+const inputData = document.querySelector('#input-data');
+const inputCategoria = document.querySelector('#input-categoria');
+const inputRecorrente = document.querySelector('#input-recorrente');
 
-    if (descriptionInput.value.trim() === "" || amountInput.value.trim() === "" || dateInput.value === "") {
-        alert("Atenção: Por favor, preencha todos os campos da transação!");
-        return; 
-    }
+const btnDespesa = document.querySelector('#btn-despesa');
+const btnReceita = document.querySelector('#btn-receita');
+let tipoAtual = 'despesa'; 
 
- const transaction = {
-        description: descriptionInput.value,
-        amount: Number(amountInput.value), 
-        date: dateInput.value,
-        type: typeInput.value
-    };
 
-     
-    const currentData = JSON.parse(localStorage.getItem('transactions')) || [];
-    currentData.push(transaction);
-    localStorage.setItem('transactions', JSON.stringify(currentData));
-    console.log("Dados salvos no LocalStorage!", transaction);
-
-    form.reset(); 
-    alert("Transação salva com sucesso!");
-    
+btnNovaTransacao.addEventListener('click', function() {
+    modalOverlay.style.display = 'flex'; 
 });
 
+btnFecharModal.addEventListener('click', function() {
+    modalOverlay.style.display = 'none'; 
+});
