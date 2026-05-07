@@ -20,6 +20,7 @@
             <nav class="sidebar-nav">
                 <button>Dashboard</button>
                 <button>Transações</button>
+                <button>Orçamentos</button>
             </nav>
             <div class="sidebar-footer">
                 <button class="btn-nova-transacao">+ Nova Transação</button>
@@ -34,7 +35,7 @@
                     <div class="avatar">U</div>
                 </div>
             </header>
-            <div class="page-content">
+            <div class="page-content" id="pagina-dashboard">
                 <h2>Visão Geral</h2>
                 <p>Aqui está o resumo financeiro</p>
                 <div class="cards-container">
@@ -69,6 +70,65 @@
                     </table>
                 </div>
             </div>
+            <div class="page-content" id="pagina-transacoes">
+                <div class="page-header">
+                    <div>
+                        <h2>Transações</h2>
+                        <p>Histórico completo de entradas e saídas.</p>
+                    </div>
+                    <div class="header-actions">
+                        <div class="filtros">
+                            <button class="filtro-btn ativo">Todas</button>
+                            <button class="filtro-btn">Receitas</button>
+                            <button class="filtro-btn">Despesas</button>
+                        </div>
+                        <button class="btn-exportar">⬇ Exportar CSV</button>
+                    </div>
+                </div>
+
+                <div class="tabela-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Descrição</th>
+                                <th>Categoria</th>
+                                <th>Data</th>
+                                <th>Valor</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="lista-transacoes-completa"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="page-content" id="pagina-orcamentos">
+                <div class="page-header">
+                    <div>
+                        <h2>Orçamentos</h2>
+                        <p>Controle seus limites de gastos por categoria.</p>
+                    </div>
+                    <button class="btn-definir-limites">✏ Definir Limites</button>
+                </div>
+
+                <div class="orcamentos-grid">
+                    <div class="orcamento-card">
+                        <div class="orcamento-card-header">
+                            <span class="orcamento-nome">Moradia</span>
+                            <span class="orcamento-pct">100%</span>
+                            <button class="btn-remover-orcamento">✕</button>
+                        </div>
+                        <div class="orcamento-valores">
+                            <span>Gasto: <strong>R$ 1.580,00</strong></span>
+                            <span>Limite: R$ 1.500,00</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill danger" style="width: 100%"></div>
+                        </div>
+                        <p class="orcamento-aviso">⚠ Limite ultrapassado em R$ 80,00!</p>
+                    </div>
+                </div>
+            </div>
+
         </main>
     </div>
     <div id="modal-overlay">
@@ -92,7 +152,6 @@
                 <label>Data</label>
                 <input type="date" id="input-data">
 
-                </select>
                 <label>Categoria</label>
                 <select id="input-categoria">
                     <option value="moradia">Moradia</option>
