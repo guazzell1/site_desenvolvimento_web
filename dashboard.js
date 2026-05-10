@@ -14,3 +14,17 @@ let transacoes = [
   { id: 2, descricao: "Aluguel",  valor: 1200, tipo: "despesa", categoria: "moradia",     data: "2026-05-05" },
   { id: 3, descricao: "Mercado",  valor: 350,  tipo: "despesa", categoria: "alimentacao", data: "2026-05-07" }
 ];
+
+function calcularSaldoTotal() {
+    let saldo = 0;
+
+    transacoes.forEach(function(t) {
+        if (t.tipo === "receita")  {
+            saldo += t.valor;
+        } else {
+            saldo -= t.valor;
+        }
+    });
+
+    return saldo;
+}
