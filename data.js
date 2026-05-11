@@ -36,7 +36,7 @@ async function carregarTransacoes() {
 }
 
 // Salva um novo dado no Banco de Dados (Nuvem)
-async function adicionarTransacao(textoDescricao, numeroValor, textoTipo, textoData) {
+async function adicionarTransacao(textoDescricao, numeroValor, textoTipo, textoData, textoCategoria, booleanoRecorrente) {
     console.log("Salvando no banco de dados...");
 
     // O Supabase gera o ID automaticamente lá no servidor, não precisamos mandar
@@ -44,7 +44,9 @@ async function adicionarTransacao(textoDescricao, numeroValor, textoTipo, textoD
         descricao: textoDescricao,
         valor: numeroValor,
         tipo: textoTipo,
-        data: textoData
+        data: textoData,
+        categoria: textoCategoria,
+        recorrente: booleanoRecorrente
     };
 
     const { data, error } = await cliente_supabase
