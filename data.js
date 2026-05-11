@@ -2,79 +2,75 @@
 // data.js - Lógica e Dados 
 // ==========================================
 
-// 1. O Banco de Dados de Mentira (Array de Objetos)
-// Cada objeto dentro das chaves {} representa uma transação única.
-let transacoes = [
-    {
-        id: 1,
-        descricao: "Mesada / Salário",
-        valor: 1500.00,
-        tipo: "receita",
-        data: "2026-05-01"
-    },
-    {
-        id: 2,
-        descricao: "Lanche da faculdade",
-        valor: 25.50,
-        tipo: "despesa",
-        data: "2026-05-05"
-    },
-    {
-        id: 3,
-        descricao: "Mensalidade do Spotify",
-        valor: 21.90,
-        tipo: "despesa",
-        data: "2026-05-08"
-    }
-];
+// Inicializa a conexão com o Supabase
+const SUPABASE_URL = 'https://ghxeseaavjuzhttilzrq.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdoeGVzZWFhdmp1emh0dGlsenJxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg0NzY4NzYsImV4cCI6MjA5NDA1Mjg3Nn0.Zn7YE7yKCNbiVVzKJ6RJaeN1JICzxXeIGQsCYrNd_L4';
+const cliente_supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// 2. A Inteligência do Negócio (Função de Cálculo)
-function calcularSaldoTotal() {
-    let saldo = 0; // Começamos com a conta zerada
+// Nosso array local continua existindo para alimentar a tela mais rápido
+let transacoes = [];
 
-    // Laço de repetição clássico para percorrer a lista
-    for (let i = 0; i < transacoes.length; i++) {
-        let transacaoAtual = transacoes[i];
+// Busca os dados no Banco de Dados (Nuvem)
+async function carregarTransacoes() {
+    console.log("Buscando dados no Supabase...");
+    
+    // O 'await' faz o código esperar a internet responder
+    const { data, error } = await cliente_supabase
+        .from('transacoes')
+        .select('*'); // todas as colunas
 
-        // Regra de negócio: se for receita, soma. Se for despesa, subtrai.
-        if (transacaoAtual.tipo === "receita") {
-            saldo = saldo + transacaoAtual.valor;
-        } else if (transacaoAtual.tipo === "despesa") {
-            saldo = saldo - transacaoAtual.valor;
-        }
+    if (error) {
+        console.error("Erro ao buscar dados:", error);
+        return;
     }
 
-    return saldo; // Devolve o valor final processado
+    // Se deu certo, atualizamos nosso array local e mostramos no console
+    transacoes = data;
+    console.log("[Banco de Dados] Transações carregadas:", transacoes);
+    console.log("Saldo Atualizado: R$", calcularSaldoTotal());
+    
+    // Aqui no futuro você vai chamar a função do Aluno 3 para desenhar a tabela!
 }
 
-// Função para adicionar uma nova transação no sistema
-function adicionarTransacao(textoDescricao, numeroValor, textoTipo, textoData) {
-    
-    // 1. Montamos o objeto igualzinho ao nosso "Contrato de Dados"
+// Salva um novo dado no Banco de Dados (Nuvem)
+async function adicionarTransacao(textoDescricao, numeroValor, textoTipo, textoData) {
+    console.log("Salvando no banco de dados...");
+
+    // O Supabase gera o ID automaticamente lá no servidor, não precisamos mandar
     const novaTransacao = {
-        id: Date.now(), // Esse comando gera um número único na hora, perfeito para IDs
         descricao: textoDescricao,
         valor: numeroValor,
         tipo: textoTipo,
         data: textoData
     };
 
-    // 2. Colocamos esse novo objeto dentro do nosso array principal
-    transacoes.push(novaTransacao);
+    const { data, error } = await cliente_supabase
+        .from('transacoes')
+        .insert([novaTransacao])
+        .select(); // Pede pro Supabase devolver o dado salvo (agora com o ID oficial)
 
-    // 3. Aviso no console para a gente saber que funcionou
-    console.log(`[Sucesso] Transação "${textoDescricao}" adicionada!`);
+    if (error) {
+        console.error("Erro ao salvar transação:", error);
+        return;
+    }
+
+    console.log(`[Sucesso] Transação "${textoDescricao}" salva na nuvem!`);
+    
+    // Recarrega a lista toda para manter tudo sincronizado
+    await carregarTransacoes(); 
 }
 
-// 3. Área de Testes (Para rodar no Console)
-console.log("=== SISTEMA CENTZ: TESTE DE LÓGICA ===");
-console.log("Total de transações cadastradas:", transacoes.length);
-console.log("Saldo calculado: R$", calcularSaldoTotal());
+function calcularSaldoTotal() {
+    let saldo = 0;
+    for (let i = 0; i < transacoes.length; i++) {
+        if (transacoes[i].tipo === "receita") {
+            saldo += transacoes[i].valor;
+        } else if (transacoes[i].tipo === "despesa") {
+            saldo -= transacoes[i].valor;
+        }
+    }
+    return saldo;
+}
 
-// Simulando o Aluno 4 cadastrando a conta de luz
-console.log("--- Testando o cadastro ---");
-adicionarTransacao("Conta de Luz", 150.00, "despesa", "2026-05-15");
-
-// Vamos ver se o sistema recalculou o saldo corretamente!
-console.log("Novo total de transações:", transacoes.length);
-console.log("Novo saldo atualizado: R$", calcularSaldoTotal());
+// Inicia o sistema buscando os dados assim que o arquivo é lido
+carregarTransacoes();
