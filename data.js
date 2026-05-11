@@ -29,7 +29,10 @@ async function carregarTransacoes() {
     console.log("[Banco de Dados] Transações carregadas:", transacoes);
     console.log("Saldo Atualizado: R$", calcularSaldoTotal());
     
-    // Aqui no futuro você vai chamar a função do Aluno 3 para desenhar a tabela!
+    // avisa o arquivo do Aluno 3 para desenhar a tela
+    if (typeof atualizarTela === "function") {
+        atualizarTela(); 
+    }
 }
 
 // Salva um novo dado no Banco de Dados (Nuvem)
@@ -57,6 +60,26 @@ async function adicionarTransacao(textoDescricao, numeroValor, textoTipo, textoD
     console.log(`[Sucesso] Transação "${textoDescricao}" salva na nuvem!`);
     
     // Recarrega a lista toda para manter tudo sincronizado
+    await carregarTransacoes(); 
+}
+
+// Remove um dado do Banco de Dados (Nuvem)
+async function excluirTransacao(idTransacao) {
+    console.log(`Excluindo transação ID: ${idTransacao}...`);
+
+    // Pede para o Supabase deletar a linha onde a coluna 'id' seja igual ao id passado
+    const { error } = await cliente_supabase
+        .from('transacoes')
+        .delete()
+        .eq('id', idTransacao);
+
+    if (error) {
+        console.error("Erro ao excluir transação:", error);
+        return;
+    }
+
+    console.log("[Sucesso] Transação excluída da nuvem!");
+    
     await carregarTransacoes(); 
 }
 
