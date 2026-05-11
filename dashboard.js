@@ -3,11 +3,6 @@
 // ===================================================
 
 
-// --------------------------------------------------
-// FUNÇÃO: formatarMoeda(valor)
-// Converte 2500.5 em "R$ 2.500,50" no padrão brasileiro
-// toLocaleString() formata conforme as regras do país
-// --------------------------------------------------
 function formatarMoeda(valor) {
   return valor.toLocaleString("pt-BR", {
     style: "currency",
@@ -15,14 +10,6 @@ function formatarMoeda(valor) {
   });
 }
 
-
-// --------------------------------------------------
-// FUNÇÃO: formatarData(dataString)
-// Converte "2026-05-06" em "06/05/2026"
-// split("-") quebra pelo traço → ["2026","05","06"]
-// reverse() inverte → ["06","05","2026"]
-// join("/") junta com barra → "06/05/2026"
-// --------------------------------------------------
 function formatarData(dataString) {
   return dataString.split('-').reverse().join('/');
 }
@@ -49,12 +36,10 @@ function atualizarTela() {
   const entradas   = calcularEntradaDoMes();
   const saidas     = calcularSaidaDoMes();
 
-  // Injeta nos cards usando formatação correta
   document.querySelector('#display-saldo').innerText = formatarMoeda(saldoAtual);
   document.querySelector('#card-income').innerText   = formatarMoeda(entradas);
   document.querySelector('#card-expense').innerText  = formatarMoeda(saidas);
 
-  // Pinta saldo de vermelho se negativo
   const elSaldo = document.querySelector('#display-saldo');
   elSaldo.style.color = saldoAtual < 0 ? "#ef4444" : "";
 
@@ -62,13 +47,28 @@ function atualizarTela() {
 }
 
 function renderizarTabela() {
-  const tbody = document.querySelector('#lista-transacoes');
-  tbody.innerHTML = "";
+  const tbody         = document.querySelector('#lista-transacoes');
+  const tbodyCompleta = document.querySelector('#lista-transacoes-completa');
+
+  tbody.innerHTML         = "";
+  tbodyCompleta.innerHTML = "";
+
+  if (transacoes.length === 0) {
+    const msgVazia = `
+      <tr>
+        <td colspan="5" style="text-align:center; padding:2rem; color:#888;">
+          Nenhuma transação cadastrada ainda.
+        </td>
+      </tr>
+    `;
+    tbody.innerHTML         = msgVazia;
+    tbodyCompleta.innerHTML = msgVazia;
+    return; 
+  }
 
   transacoes.forEach(function(t) {
     const tr = document.createElement('tr');
 
-    // Define cor e sinal conforme o tipo
     const isReceita = t.tipo === "receita";
     const cor       = isReceita ? "#22c55e" : "#ef4444";
     const sinal     = isReceita ? "+" : "-";
@@ -81,6 +81,7 @@ function renderizarTabela() {
       <td><button onclick="excluirTransacao(${t.id})" style="color:#ef4444; border:none; background:none; cursor:pointer;">🗑</button></td>
     `;
 
-    tbody.appendChild(tr);
+    tbody.appendChild(tr.cloneNode(true));
+    tbodyCompleta.appendChild(tr);
   });
 }
