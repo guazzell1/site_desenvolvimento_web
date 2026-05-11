@@ -1,7 +1,7 @@
 const modalOverlay = document.querySelector('#modal-overlay');
 const btnNovaTransacao = document.querySelector('.btn-nova-transacao');
 const btnFecharModal = document.querySelector('#btn-fechar-modal');
-
+const formMensagem = document.querySelector('#form-mensagem');
 const form = document.querySelector('#tx-form');
 const inputDescricao = document.querySelector('#input-descricao');
 const inputValor = document.querySelector('#input-valor');
@@ -26,6 +26,23 @@ btnDespesa.addEventListener('click', function() {
     btnReceita.classList.remove('ativo'); 
     tipoAtual = 'despesa';
 });
+
+function mostrarMensagem(texto, tipo) {
+    formMensagem.textContent = texto;
+    formMensagem.style.display = 'block';
+
+    if (tipo === 'erro') {
+        formMensagem.style.backgroundColor = '#fee2e2';
+        formMensagem.style.color = '#ef4444';
+    } else if (tipo === 'sucesso') {
+        formMensagem.style.backgroundColor = '#d1fae5';
+        formMensagem.style.color = '#059669';
+    }
+
+    setTimeout(function() {
+        formMensagem.style.display = 'none';
+    }, 3000);
+}
 
 btnReceita.addEventListener('click', function() {
     btnReceita.classList.add('ativo');    
