@@ -28,3 +28,27 @@ function calcularSaldoTotal() {
 
     return saldo;
 }
+
+function calcularEntradaDoMes() {
+    let total = 0;
+
+    transacoes.forEach(function(t) {
+        if (t.tipo === "receita") {
+            total += t.valor;
+        }
+    });
+
+    return total;
+}
+
+function calcularSaidaDoMes() {
+    let total = 0;
+
+    transacoes.forEach(function(t) {
+        if (t.tipo === "despesa") {
+            total += t.valor;
+        }
+    });
+
+    return total;
+}
