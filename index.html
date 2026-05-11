@@ -69,6 +69,13 @@
                         <tbody id="lista-transacoes"></tbody>
                     </table>
                 </div>
+
+                <!-- GRÁFICO — adicionado pelo Aluno 3 -->
+                <div class="grafico-container">
+                    <h3>Gastos por Categoria</h3>
+                    <canvas id="grafico-categorias"></canvas>
+                </div>
+
             </div>
             <div class="page-content" id="pagina-transacoes">
                 <div class="page-header">
@@ -206,6 +213,8 @@
             </form>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <script src="data.js"></script>

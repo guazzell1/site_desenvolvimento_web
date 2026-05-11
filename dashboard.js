@@ -44,6 +44,7 @@ function atualizarTela() {
   elSaldo.style.color = saldoAtual < 0 ? "#ef4444" : "";
 
   renderizarTabela();
+  renderizarGrafico(); 
 }
 
 function renderizarTabela() {
@@ -83,5 +84,54 @@ function renderizarTabela() {
 
     tbody.appendChild(tr.cloneNode(true));
     tbodyCompleta.appendChild(tr);
+  });
+}
+
+let graficoCategorias = null;
+
+function renderizarGrafico() {
+  const despesas = transacoes.filter(function(t) {
+    return t.tipo === "despesa";
+  });
+
+  const totais = {};
+  despesas.forEach(function(t) {
+    if (totais[t.categoria]) {
+      totais[t.categoria] += t.valor; // já existe, soma
+    } else {
+      totais[t.categoria] = t.valor;  // não existe, cria
+    }
+  });
+
+  const labels = Object.keys(totais);    // ["moradia", "alimentacao"]
+  const valores = Object.values(totais); // [1200, 350]
+
+  if (labels.length === 0) return;
+
+  if (graficoCategorias) {
+    graficoCategorias.destroy();
+  }
+
+  const ctx = document.getElementById('grafico-categorias');
+  if (!ctx) return;
+
+  graficoCategorias = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: labels,
+      datasets: [{
+        data: valores,
+        backgroundColor: [
+          '#6366f1', '#22c55e', '#f59e0b',
+          '#ef4444', '#3b82f6', '#ec4899'
+        ]
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: 'bottom' }
+      }
+    }
   });
 }
