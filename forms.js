@@ -35,32 +35,73 @@ function mostrarMensagem(texto, tipo) {
 }
 
 
+const categoriasDespesa = [
+    { valor: 'moradia', texto: 'Moradia' },
+    { valor: 'alimentacao', texto: 'Alimentação' },
+    { valor: 'transporte', texto: 'Transporte' },
+    { valor: 'lazer', texto: 'Lazer' },
+    { valor: 'saude', texto: 'Saúde' },
+    { valor: 'outros', texto: 'Outros' }
+];
+
+const categoriasReceita = [
+    { valor: 'salario', texto: 'Salário' },
+    { valor: 'freelance', texto: 'Freelance' },
+    { valor: 'rendimentos', texto: 'Rendimentos' },
+    { valor: 'vendas', texto: 'Vendas' },
+    { valor: 'outros', texto: 'Outros' }
+];
+
+
+function atualizarCategorias(tipo) {
+    
+    inputCategoria.innerHTML = ''; 
+
+  
+    const lista = tipo === 'despesa' ? categoriasDespesa : categoriasReceita;
+
+   
+    lista.forEach(cat => {
+        const option = document.createElement('option');
+        option.value = cat.valor;
+        option.textContent = cat.texto;
+        inputCategoria.appendChild(option);
+    });
+}
+
+
 if (btnNovaTransacao) {
     btnNovaTransacao.addEventListener('click', function() {
         modalOverlay.style.display = 'flex'; 
+        atualizarCategorias(tipoAtual);
     });
 }
 
 if (btnFecharModal) {
     btnFecharModal.addEventListener('click', function() {
         modalOverlay.style.display = 'none'; 
-        formMensagem.style.display = 'none';
+        formMensagem.style.display = 'none'; 
     });
 }
+
 
 if (btnDespesa && btnReceita) {
     btnDespesa.addEventListener('click', function() {
         btnDespesa.classList.add('ativo');    
         btnReceita.classList.remove('ativo'); 
         tipoAtual = 'despesa';
+        atualizarCategorias('despesa');
     });
 
     btnReceita.addEventListener('click', function() {
         btnReceita.classList.add('ativo');    
         btnDespesa.classList.remove('ativo'); 
         tipoAtual = 'receita';
+        atualizarCategorias('receita');
     });
 }
+
+
 
 
 if (form) {
