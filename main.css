@@ -794,6 +794,156 @@ td {
     }
 }
 
+/* ========================================== */
+/* LAYOUT DA PÁGINA DE METAS                  */
+/* ========================================== */
+
+/* Grid de duas colunas */
+.metas-layout {
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    gap: 32px;
+    align-items: start;
+}
+
+.metas-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* Caixa de Total Economizado (Verde Brilhante/Neon) */
+.card-total-glow {
+    background: linear-gradient(135deg, #00d09c 0%, #00f2b6 100%);
+    border-radius: 16px;
+    padding: 36px 24px; 
+    min-height: 160px; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: 0 0 24px rgba(0, 208, 156, 0.5);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.card-total-title {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.9);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.card-total-value {
+    font-size: 2.5rem !important; 
+    font-weight: 800; 
+    color: #ffffff !important; 
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); 
+    margin: 0;
+    line-height: 1.1;
+    letter-spacing: -1px;
+}
+
+.meta-card {
+    padding: 14px 20px !important; /* Reduz o espaço interno para afinar o card */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Suaviza a sombra para combinar com o aspecto fino */
+}
+
+.metas-conteudo {
+    display: flex;
+    flex-direction: column;
+    gap: 12px; 
+}
+/* Caixa do Formulário de Nova Meta */
+.card-form-meta {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    border: 1px solid #e2e8f0;
+}
+
+.card-form-meta h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: #0f172a;
+}
+
+.form-nova-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.form-meta-group label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    display: block;
+}
+
+.form-meta-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    box-sizing: border-box;
+}
+
+.form-meta-group input:focus {
+    outline: none;
+    border-color: #00d09c;
+    box-shadow: 0 0 0 3px rgba(0, 208, 156, 0.2);
+}
+
+.btn-meta-submit {
+    width: 100%;
+    padding: 14px;
+    background-color: #00d09c;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: background-color 0.2s;
+}
+
+.btn-meta-submit:hover {
+    background-color: #00a67c;
+}
+
+/* ========================================== */
+/* IDENTIDADE VISUAL DOS CARDS (Verde Centz)  */
+/* ========================================== */
+
+/* Transforma o Grid da direita em uma lista flexível */
+.metas-conteudo {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Força os elementos dinâmicos do JS a usarem o verde */
+.meta-valor-atual { color: #00d09c !important; }
+.progress-fill { background-color: #00d09c !important; }
+.btn-adicionar-meta { 
+    background-color: #00d09c !important; 
+    border: none;
+    color: white;
+}
+.btn-adicionar-meta:hover { background-color: #00a67c !important; }
+
+/* Responsividade: no celular, a caixa cai para baixo */
+@media (max-width: 900px) {
+    .metas-layout { grid-template-columns: 1fr; }
+}
+
 .grafico-container {
   margin-top: 2rem;
   padding: 1.5rem;
