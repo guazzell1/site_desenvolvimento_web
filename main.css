@@ -554,6 +554,11 @@ td {
     align-items: center;
 }
 
+.meta-card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transform: translateY(-2px); /* Efeito sutil de levantar ao passar o mouse */
+}
+
 .meta-nome {
     font-size: 0.875rem;
     font-weight: 600;
@@ -845,8 +850,12 @@ td {
 }
 
 .meta-card {
-    padding: 14px 20px !important; /* Reduz o espaço interno para afinar o card */
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Suaviza a sombra para combinar com o aspecto fino */
+    background: white;
+    border: 1px solid #e2e8f0; /* Borda fininha e elegante */
+    border-radius: 16px; /* Cantos bem arredondados */
+    padding: 20px !important; /* Respiro equilibrado */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
 
 .metas-conteudo {

@@ -73,124 +73,129 @@
                         <tbody id="lista-transacoes"></tbody>
                     </table>
                 </div>
-            </div>
-            <!-- Fim da tabela-container -->
+                <!-- Fim da tabela-container -->
 
-            <!-- GRÁFICO — adicionado pelo Aluno 3 -->
-            <div class="grafico-container">
-                <h3>Gastos por Categoria</h3>
-                <canvas id="grafico-categorias"></canvas>
-            </div>
-
-    </div>
-    </div>
-    <div class="page-content" id="pagina-transacoes">
-        <div class="page-header">
-            <div>
-                <h2>Transações</h2>
-                <p>Histórico completo de entradas e saídas.</p>
-            </div>
-            <div class="header-actions">
-                <div class="filtros">
-                    <button class="filtro-btn ativo">Todas</button>
-                    <button class="filtro-btn">Receitas</button>
-                    <button class="filtro-btn">Despesas</button>
-                </div>
-                <button class="btn-exportar">⬇ Exportar CSV</button>
-            </div>
-        </div>
-
-        <div class="tabela-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Descrição</th>
-                        <th>Categoria</th>
-                        <th>Data</th>
-                        <th>Valor</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody id="lista-transacoes-completa"></tbody>
-            </table>
-        </div>
-    </div>
-    <div class="page-content" id="pagina-orcamentos">
-        <div class="page-header">
-            <div>
-                <h2>Orçamentos</h2>
-                <p>Controle seus limites de gastos por categoria.</p>
-            </div>
-            <button class="btn-definir-limites">✏ Definir Limites</button>
-        </div>
-
-        <div class="orcamentos-grid">
-            <div class="orcamento-card">
-                <div class="orcamento-card-header">
-                    <span class="orcamento-nome">Moradia</span>
-                    <span class="orcamento-pct">100%</span>
-                    <button class="btn-remover-orcamento">✕</button>
-                </div>
-                <div class="orcamento-valores">
-                    <span>Gasto: <strong>R$ 1.580,00</strong></span>
-                    <span>Limite: R$ 1.500,00</span>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill danger" style="width: 100%"></div>
-                </div>
-                <p class="orcamento-aviso">⚠ Limite ultrapassado em R$ 80,00!</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="page-content" id="pagina-metas" style="display: none;">
-        <div class="page-header">
-            <div>
-                <h2>Metas de Poupança</h2>
-                <p>Planeje o seu futuro financeiro e acompanhe seu patrimônio.</p>
-            </div>
-        </div>
-
-        <div class="metas-layout">
-
-            <aside class="metas-sidebar">
-                <div class="card-total-glow">
-                    <h3 class="card-total-title">Total Economizado</h3>
-                    <p id="display-total-economizado" class="card-total-value">R$ 0,00</p>
+                <!-- GRÁFICO -->
+                <div class="grafico-container">
+                    <h3>Gastos por Categoria</h3>
+                    <canvas id="grafico-categorias"></canvas>
                 </div>
 
-                <div class="card-form-meta">
-                    <h3>Criar Nova Meta</h3>
-                    <form id="form-nova-meta-inline" class="form-nova-meta">
-                        <div class="form-meta-group">
-                            <label>Nome da Meta</label>
-                            <input type="text" id="input-meta-nome-inline" placeholder="Ex: Viagem, Reserva..."
-                                required>
+            </div> <!-- FECHAMENTO CORRETO DA PAGINA-DASHBOARD (Aqui é o lugar certo) -->
+
+            <!-- div transacoes-->
+            <div class="page-content" id="pagina-transacoes">
+                <div class="page-content" id="pagina-transacoes">
+                    <div class="page-header">
+                        <div>
+                            <h2>Transações</h2>
+                            <p>Histórico completo de entradas e saídas.</p>
                         </div>
-                        <div class="form-meta-group">
-                            <label>Valor Alvo (R$)</label>
-                            <input type="number" id="input-meta-valor-inline" placeholder="Ex: 5000" step="0.01"
-                                required>
+                        <div class="header-actions">
+                            <div class="filtros">
+                                <button class="filtro-btn ativo">Todas</button>
+                                <button class="filtro-btn">Receitas</button>
+                                <button class="filtro-btn">Despesas</button>
+                            </div>
+                            <button class="btn-exportar">⬇ Exportar CSV</button>
                         </div>
-                        <button type="submit" class="btn-meta-submit">+ Salvar Meta</button>
-                    </form>
+                    </div>
+
+                    <div class="tabela-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Descrição</th>
+                                    <th>Categoria</th>
+                                    <th>Data</th>
+                                    <th>Valor</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="lista-transacoes-completa"></tbody>
+                        </table>
+                    </div>
                 </div>
-            </aside>
+            </div>
 
-            <section style="display: flex; flex-direction: column;">
-                <h3
-                    style="font-size: 1.25rem; font-weight: 600; color: #0f172a; margin-bottom: 16px; text-align: left;">
-                    Suas Metas Atuais</h3>
-
-                <div class="metas-conteudo" id="grid-de-metas">
+            <!-- div orcamento-->
+            <div class="page-content" id="pagina-orcamentos">
+                <div class="page-header">
+                    <div>
+                        <h2>Orçamentos</h2>
+                        <p>Controle seus limites de gastos por categoria.</p>
+                    </div>
+                    <button class="btn-definir-limites">✏ Definir Limites</button>
                 </div>
-            </section>
 
-        </div>
-    </div>
+                <div class="orcamentos-grid">
+                    <div class="orcamento-card">
+                        <div class="orcamento-card-header">
+                            <span class="orcamento-nome">Moradia</span>
+                            <span class="orcamento-pct">100%</span>
+                            <button class="btn-remover-orcamento">✕</button>
+                        </div>
+                        <div class="orcamento-valores">
+                            <span>Gasto: <strong>R$ 1.580,00</strong></span>
+                            <span>Limite: R$ 1.500,00</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill danger" style="width: 100%"></div>
+                        </div>
+                        <p class="orcamento-aviso">⚠ Limite ultrapassado em R$ 80,00!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- div metas -->
+            <div class="page-content" id="pagina-metas" style="display: none;">
+                <div class="page-header">
+                    <div>
+                        <h2>Metas de Poupança</h2>
+                        <p>Planeje o seu futuro financeiro e acompanhe seu patrimônio.</p>
+                    </div>
+                </div>
+
+                <div class="metas-layout">
+
+                    <aside class="metas-sidebar">
+                        <div class="card-total-glow">
+                            <h3 class="card-total-title">Total Economizado</h3>
+                            <p id="display-total-economizado" class="card-total-value">R$ 0,00</p>
+                        </div>
+
+                        <div class="card-form-meta">
+                            <h3>Criar Nova Meta</h3>
+                            <form id="form-nova-meta-inline" class="form-nova-meta">
+                                <div class="form-meta-group">
+                                    <label>Nome da Meta</label>
+                                    <input type="text" id="input-meta-nome-inline" placeholder="Ex: Viagem, Reserva..."
+                                        required>
+                                </div>
+                                <div class="form-meta-group">
+                                    <label>Valor Alvo (R$)</label>
+                                    <input type="number" id="input-meta-valor-inline" placeholder="Ex: 5000" step="0.01"
+                                        required>
+                                </div>
+                                <button type="submit" class="btn-meta-submit">+ Salvar Meta</button>
+                            </form>
+                        </div>
+                    </aside>
+
+                    <section style="display: flex; flex-direction: column;">
+                        <h3
+                            style="font-size: 1.25rem; font-weight: 600; color: #0f172a; margin-bottom: 16px; text-align: left;">
+                            Suas Metas Atuais</h3>
+
+                        <div class="metas-conteudo" id="grid-de-metas">
+                        </div>
+                    </section>
+
+                </div>
+            </div>
 
 
-    </main>
+        </main>
     </div>
     <div id="modal-overlay">
         <div id="modal-box">
