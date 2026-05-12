@@ -80,7 +80,12 @@ function renderizarGrafico() {
         else totais[cat] = t.valor;
     });
 
-    const labels = Object.keys(totais).map(c => c.charAt(0).toUpperCase() + c.slice(1));
+    const totalGeral = Object.values(totais).reduce((a, b) => a + b, 0);
+
+    const labels = Object.keys(totais).map(function(c) {
+        const pct = Math.round((totais[c] / totalGeral) * 100);
+        return c.charAt(0).toUpperCase() + c.slice(1) + ' (' + pct + '%)';
+    });
     const valores = Object.values(totais);
 
     if (graficoCategorias) graficoCategorias.destroy();
