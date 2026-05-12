@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="main.css">
 
     <title>Centz</title>
@@ -20,7 +21,6 @@
             <nav class="sidebar-nav">
                 <button id="nav-dashboard" class="nav-btn active" data-target="pagina-dashboard">Dashboard</button>
                 <button id="nav-transacoes" class="nav-btn" data-target="pagina-transacoes">Transações</button>
-                <button id="nav-orcamentos" class="nav-btn" data-target="pagina-orcamentos">Orçamentos</button>
                 <button id="nav-metas" class="nav-btn" data-target="pagina-metas">Metas</button>
             </nav>
             <div class="sidebar-footer" style="display: flex; flex-direction: column; gap: 12px;">
@@ -31,14 +31,6 @@
             </div>
         </aside>
         <main id="main-content">
-            <header id="header">
-                <div class="header-left">
-                    <input type="text" placeholder="Buscar transações...">
-                </div>
-                <div class="header-right">
-                    <div class="avatar">U</div>
-                </div>
-            </header>
             <div class="page-content" id="pagina-dashboard">
                 <h2>Visão Geral</h2>
                 <p>Aqui está o resumo financeiro</p>
@@ -84,66 +76,44 @@
             </div> <!-- FECHAMENTO CORRETO DA PAGINA-DASHBOARD (Aqui é o lugar certo) -->
 
             <!-- div transacoes-->
-            <div class="page-content" id="pagina-transacoes">
-                <div class="page-content" id="pagina-transacoes">
-                    <div class="page-header">
-                        <div>
-                            <h2>Transações</h2>
-                            <p>Histórico completo de entradas e saídas.</p>
-                        </div>
-                        <div class="header-actions">
-                            <div class="filtros">
-                                <button class="filtro-btn ativo">Todas</button>
-                                <button class="filtro-btn">Receitas</button>
-                                <button class="filtro-btn">Despesas</button>
-                            </div>
-                            <button class="btn-exportar">⬇ Exportar CSV</button>
-                        </div>
-                    </div>
-
-                    <div class="tabela-container">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Descrição</th>
-                                    <th>Categoria</th>
-                                    <th>Data</th>
-                                    <th>Valor</th>
-                                    <th>Ações</th>
-                                </tr>
-                            </thead>
-                            <tbody id="lista-transacoes-completa"></tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- div orcamento-->
-            <div class="page-content" id="pagina-orcamentos">
+            <div class="page-content" id="pagina-transacoes" style="display: none;">
                 <div class="page-header">
                     <div>
-                        <h2>Orçamentos</h2>
-                        <p>Controle seus limites de gastos por categoria.</p>
+                        <h2>Histórico de Transações</h2>
+                        <p>Acompanhe e filtre todas as suas movimentações.</p>
                     </div>
-                    <button class="btn-definir-limites">✏ Definir Limites</button>
                 </div>
 
-                <div class="orcamentos-grid">
-                    <div class="orcamento-card">
-                        <div class="orcamento-card-header">
-                            <span class="orcamento-nome">Moradia</span>
-                            <span class="orcamento-pct">100%</span>
-                            <button class="btn-remover-orcamento">✕</button>
-                        </div>
-                        <div class="orcamento-valores">
-                            <span>Gasto: <strong>R$ 1.580,00</strong></span>
-                            <span>Limite: R$ 1.500,00</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill danger" style="width: 100%"></div>
-                        </div>
-                        <p class="orcamento-aviso">⚠ Limite ultrapassado em R$ 80,00!</p>
+                <!-- Filtros Premium -->
+                <section class="filters-container">
+                    <div class="filter-group">
+                        <label>Buscar Atividades</label>
+                        <input type="text" id="filtro-busca" class="filter-input" placeholder="Buscar por descrição...">
                     </div>
+                    <div class="filter-group">
+                        <label>Categoria</label>
+                        <select id="filtro-categoria" class="filter-select">
+                            <option value="">Todas as Categorias</option>
+                            <option value="moradia">Moradia</option>
+                            <option value="alimentacao">Alimentação</option>
+                            <option value="transporte">Transporte</option>
+                            <option value="lazer">Lazer</option>
+                            <option value="saude">Saúde</option>
+                            <option value="outros">Outros</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Tipo</label>
+                        <select id="filtro-tipo" class="filter-select">
+                            <option value="">Todos</option>
+                            <option value="receita">Receitas</option>
+                            <option value="despesa">Despesas</option>
+                        </select>
+                    </div>
+                </section>
+
+                <!-- Lista em Cards (O JS vai injetar aqui) -->
+                <div class="transactions-list" id="grid-transacoes-pagina">
                 </div>
             </div>
 
@@ -246,6 +216,7 @@
     <script src="dashboard.js"></script>
     <script src="forms.js"></script>
     <script src="metas.js"></script>
+    <script src="transacoes.js"></script>
 </body>
 
 </html>

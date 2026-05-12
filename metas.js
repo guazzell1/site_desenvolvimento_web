@@ -3,7 +3,7 @@
 // ==========================================
 
 // 1. CARREGAR E RENDERIZAR METAS
-async function carregarMetas() {
+window.carregarMetas = async function() {
     if (!usuarioLogado) return;
 
     const { data: metas, error } = await cliente_supabase
@@ -22,40 +22,34 @@ async function carregarMetas() {
 
 function renderizarMetas(metas) {
     const container = document.getElementById('grid-de-metas');
-    const displayTotal = document.getElementById('display-total-economizado'); // Pega o h2 da esquerda
+    const displayTotal = document.getElementById('display-total-economizado'); 
     if (!container) return;
 
     container.innerHTML = '';
-    let totalAcumulado = 0; // Nasce a variável do somatório
+    let totalAcumulado = 0; 
 
-    // VERIFICAÇÃO DE EMPTY STATE (Corrigida)
+    // VERIFICAÇÃO DE EMPTY STATE
     if (!metas || metas.length === 0) {
-        // Usa a variável 'container' corretamente
+        // AJUSTE 1: Adicionado o width: 100% e grid-column para não ficar espremido
         container.innerHTML = `
-            <div style="text-align: center; padding: 48px 24px; background-color: #ffffff; border: 2px dashed #e2e8f0; border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+            <div style="text-align: center; padding: 48px 24px; background-color: #ffffff; border: 2px dashed #e2e8f0; border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; grid-column: 1 / -1;">
                 <div style="width: 64px; height: 64px; background-color: #f1f5f9; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin-bottom: 16px;">
                     🎯
                 </div>
                 <h4 style="color: #0f172a; font-size: 1.15rem; font-weight: 700; margin-bottom: 8px;">Nenhuma meta por aqui</h4>
-                <p style="color: #64748b; font-size: 0.95rem; line-height: 1.5; max-width: 300px;">Você ainda não possui metas ativas. Comece a planejar o seu futuro criando a primeira no formulário ao lado!</p>
+                <p style="color: #64748b; font-size: 0.95rem; line-height: 1.5; max-width: 300px; margin: 0 auto;">Você ainda não possui metas ativas. Comece a planejar o seu futuro criando a primeira no formulário ao lado!</p>
             </div>
         `;
         
-        // Garante que o visor da esquerda seja zerado se não houver metas
-        if (displayTotal) {
-            displayTotal.textContent = `R$ 0,00`;
-        }
-        
-        return; // Agora sim paramos a função com segurança
+        if (displayTotal) displayTotal.textContent = `R$ 0,00`;
+        return; 
     }
 
     // LOOP DAS METAS EXISTENTES
     metas.forEach(meta => {
-        // Soma o dinheiro guardado nesta meta ao montante geral
         totalAcumulado += parseFloat(meta.valor_atual) || 0;
 
         const porcentagem = meta.valor_alvo > 0 ? ((meta.valor_atual / meta.valor_alvo) * 100).toFixed(0) : 0;
-        const valorFaltante = meta.valor_alvo - meta.valor_atual;
         const formatarBRL = (valor) => valor.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
         const card = document.createElement('div');
@@ -76,7 +70,7 @@ function renderizarMetas(metas) {
                 <button class="btn-remover-meta" onclick="excluirMeta('${meta.id}')" style="background: none; border: none; color: #94a3b8; cursor: pointer; font-size: 1.2rem; transition: color 0.2s;" onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='#94a3b8'">🗑</button>
             </div>
 
-            <!-- Valores e Barra de Progresso Fina -->
+            <!-- Valores e Barra de Progresso -->
             <div style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px;">
                 <div style="display: flex; justify-content: space-between; align-items: flex-end;">
                     <span style="font-size: 0.875rem; font-weight: 700; color: #0f172a;">
@@ -86,7 +80,6 @@ function renderizarMetas(metas) {
                     <span style="color: #00d09c; font-weight: 900; font-size: 0.875rem;">${porcentagem}%</span>
                 </div>
                 
-                <!-- Barra -->
                 <div style="width: 100%; height: 8px; background-color: #f1f5f9; border-radius: 999px; overflow: hidden;">
                     <div style="height: 100%; background-color: #00d09c; border-radius: 999px; width: ${porcentagem > 100 ? 100 : porcentagem}%; transition: width 0.5s ease;"></div>
                 </div>
@@ -102,7 +95,6 @@ function renderizarMetas(metas) {
         container.appendChild(card);
     });
 
-    // Atualiza o visor da esquerda com o total (quando existem metas)
     if (displayTotal) {
         displayTotal.textContent = `R$ ${totalAcumulado.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
     }
@@ -114,7 +106,7 @@ window.adicionarAporte = async function (idMeta, valorAtual) {
     const valorAporte = parseFloat(inputField.value);
 
     if (isNaN(valorAporte) || valorAporte <= 0) {
-        alert('Digite um valor válido para adicionar.'); // Pode trocar pelo seu Toast
+        alert('Digite um valor válido para adicionar.'); 
         return;
     }
 
@@ -127,8 +119,8 @@ window.adicionarAporte = async function (idMeta, valorAtual) {
         .eq('user_id', usuarioLogado.id);
 
     if (!error) {
-        inputField.value = ''; // Limpa o input
-        await carregarMetas(); // Recarrega a tela
+        inputField.value = ''; 
+        await carregarMetas(); 
     } else {
         console.error("Erro ao adicionar aporte:", error);
     }
@@ -151,7 +143,7 @@ window.excluirMeta = async function (idMeta) {
     }
 }
 
-// 4. LÓGICA DO FORMULÁRIO LATERAL (INSERT)
+// 4. LÓGICA DO FORMULÁRIO E INICIALIZAÇÃO
 document.addEventListener('DOMContentLoaded', () => {
     const formMetaInline = document.getElementById('form-nova-meta-inline');
 
@@ -172,11 +164,18 @@ document.addEventListener('DOMContentLoaded', () => {
             }]);
 
             if (!error) {
-                formMetaInline.reset(); // Limpa os campos após salvar
-                await carregarMetas(); // Renderiza o novo card instantaneamente
+                formMetaInline.reset(); 
+                await carregarMetas(); 
             } else {
                 console.error("Erro ao criar meta:", error);
             }
         });
     }
+
+    // AJUSTE 2: Gatilho para carregar as metas assim que a página abrir
+    setTimeout(() => {
+        if(usuarioLogado) {
+            carregarMetas();
+        }
+    }, 1000); // Dá 1 segundo pro Supabase checar o login antes de puxar os dados
 });
