@@ -1,0 +1,4 @@
+// supabase-config.js
+const SUPABASE_URL = 'https://ghxeseaavjuzhttilzrq.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdoeGVzZWFhdmp1emh0dGlsenJxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg0NzY4NzYsImV4cCI6MjA5NDA1Mjg3Nn0.Zn7YE7yKCNbiVVzKJ6RJaeN1JICzxXeIGQsCYrNd_L4';
+const cliente_supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
