@@ -32,7 +32,7 @@ function atualizarTela() {
     renderizarTabela();
     renderizarGrafico();
     renderizarGraficoLinha(); 
-    
+
     // Sincroniza a página de transações se ela existir!
     if (typeof aplicarFiltrosNaPagina === 'function') {
         aplicarFiltrosNaPagina();
@@ -159,4 +159,85 @@ if (btnSair) {
         await cliente_supabase.auth.signOut();
         window.location.href = 'login.html'; 
     });
+}
+
+let graficoFluxo = null;
+
+function renderizarGraficoLinha() {
+  const ctx = document.getElementById('grafico-fluxo');
+  if (!ctx) return;
+
+  // Agrupa entradas e saídas por mês
+  // ex: { "2026-05": { entradas: 6000, saidas: 370 } }
+  const porMes = {};
+
+  transacoes.forEach(function(t) {
+    const mes = t.data.substring(0, 7); // pega "2026-05" de "2026-05-01"
+    if (!porMes[mes]) {
+      porMes[mes] = { entradas: 0, saidas: 0 };
+    }
+    if (t.tipo === "receita") {
+      porMes[mes].entradas += t.valor;
+    } else {
+      porMes[mes].saidas += t.valor;
+    }
+  });
+
+  // Ordena os meses cronologicamente
+  const meses = Object.keys(porMes).sort();
+
+  // Formata os meses para exibição ex: "2026-05" → "Mai/26"
+  const nomesMeses = ["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
+  const labels = meses.map(function(m) {
+    const partes = m.split("-");
+    return nomesMeses[parseInt(partes[1]) - 1] + "/" + partes[0].substring(2);
+  });
+
+  const dadosEntradas = meses.map(function(m) { return porMes[m].entradas; });
+  const dadosSaidas   = meses.map(function(m) { return porMes[m].saidas; });
+
+  if (graficoFluxo) graficoFluxo.destroy();
+
+  graficoFluxo = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: 'Entradas',
+          data: dadosEntradas,
+          borderColor: '#00d09c',
+          backgroundColor: 'rgba(0, 208, 156, 0.1)',
+          fill: true,
+          tension: 0.4, // curva suave igual à referência
+          borderWidth: 3
+        },
+        {
+          label: 'Saídas',
+          data: dadosSaidas,
+          borderColor: '#ef4444',
+          borderDash: [5, 5], // linha tracejada igual à referência
+          backgroundColor: 'transparent',
+          fill: false,
+          tension: 0.4,
+          borderWidth: 2
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: 'top' }
+      },
+      scales: {
+        y: {
+          ticks: {
+            callback: function(value) {
+              return 'R$ ' + value.toLocaleString('pt-BR');
+            }
+          }
+        }
+      }
+    }
+  });
 }
