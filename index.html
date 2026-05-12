@@ -187,6 +187,24 @@
             </form>
         </div>
     </div>
+    <div id="modal-meta-overlay" style="display: none; position: fixed; inset: 0; background-color: rgba(0, 0, 0, 0.5); z-index: 60; align-items: center; justify-content: center;">
+        <div id="modal-meta-box" style="background-color: #ffffff; border-radius: 16px; padding: 24px; width: 100%; max-width: 440px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);">
+            <div class="modal-header">
+                <h3>Nova Meta de Poupança</h3>
+                <button id="btn-fechar-modal-meta" style="background: none; border: none; font-size: 1.2rem; color: #94a3b8; cursor: pointer;">X</button>
+            </div>
+            <form id="form-nova-meta" style="display: flex; flex-direction: column; gap: 12px;">
+                
+                <label style="font-size: 0.75rem; font-weight: 600; color: #64748b; text-transform: uppercase;">Nome da Meta</label>
+                <input type="text" id="input-meta-nome" placeholder="Ex: Viagem, Reserva de Emergência" style="padding: 10px 14px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 0.875rem; outline: none;" required>
+
+                <label style="font-size: 0.75rem; font-weight: 600; color: #64748b; text-transform: uppercase;">Valor Alvo (R$)</label>
+                <input type="number" id="input-meta-valor" placeholder="Ex: 5000" step="0.01" style="padding: 10px 14px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 0.875rem; outline: none;" required>
+
+                <button type="submit" style="width: 100%; padding: 12px; background-color: #3b82f6; color: white; border: none; border-radius: 8px; font-size: 0.875rem; font-weight: 600; cursor: pointer; margin-top: 8px;">Criar Meta</button>
+            </form>
+        </div>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script src="supabase-config.js"></script>
@@ -196,6 +214,8 @@
     <script src="forms.js"></script>
 
     <script src="data.js"></script>
+
+    <script src="metas.js"></script>
 </body>
 
 </html>

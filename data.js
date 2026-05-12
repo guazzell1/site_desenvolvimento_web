@@ -111,5 +111,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const logado = await verificarSessao();
     if (logado) {
         await carregarTransacoes();
+        await carregarMetas();
     }
 });

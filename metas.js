@@ -1,9 +1,10 @@
 // ==========================================
-// MÓDULO DE METAS (Com o visual exato da equipe)
+// MÓDULO DE METAS - CRUD Completo
 // ==========================================
 
+// 1. CARREGAR E RENDERIZAR METAS
 async function carregarMetas() {
-    if (!usuarioLogado) return; 
+    if (!usuarioLogado) return;
 
     const { data: metas, error } = await cliente_supabase
         .from('metas')
@@ -23,20 +24,16 @@ function renderizarMetas(metas) {
     const container = document.getElementById('grid-de-metas');
     if (!container) return;
 
-    container.innerHTML = ''; // Limpa a tela
+    container.innerHTML = ''; 
 
     metas.forEach(meta => {
-        // Cálculos matemáticos de progresso
         const porcentagem = meta.valor_alvo > 0 ? ((meta.valor_atual / meta.valor_alvo) * 100).toFixed(0) : 0;
         const valorFaltante = meta.valor_alvo - meta.valor_atual;
-
-        // Formatação de Moeda (Padrão PT-BR)
         const formatarBRL = (valor) => valor.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
         const card = document.createElement('div');
         card.className = 'meta-card';
         
-        // Aqui nós injetamos O SEU HTML exato, só trocando os dados
         card.innerHTML = `
             <div class="meta-card-header">
                 <span class="meta-nome">${meta.nome}</span>
@@ -63,51 +60,94 @@ function renderizarMetas(metas) {
     });
 }
 
-// Adiciona saldo a uma meta existente
-async function adicionarAporte(idMeta, valorAtual) {
+// 2. APORTAR DINHEIRO (UPDATE)
+window.adicionarAporte = async function(idMeta, valorAtual) {
     const inputField = document.getElementById(`aporte-${idMeta}`);
     const valorAporte = parseFloat(inputField.value);
 
-    // Validação de segurança
     if (isNaN(valorAporte) || valorAporte <= 0) {
-        mostrarNotificacao('Digite um valor válido para adicionar.', 'erro');
+        alert('Digite um valor válido para adicionar.'); // Pode trocar pelo seu Toast
         return;
     }
 
     const novoValorAtual = valorAtual + valorAporte;
 
-    // Atualiza a linha específica no Supabase
     const { error } = await cliente_supabase
         .from('metas')
         .update({ valor_atual: novoValorAtual })
         .eq('id', idMeta)
-        .eq('user_id', usuarioLogado.id); // Segurança extra
+        .eq('user_id', usuarioLogado.id);
 
-    if (error) {
-        console.error("Erro ao atualizar meta:", error);
-        mostrarNotificacao('Erro ao adicionar valor.', 'erro');
+    if (!error) {
+        inputField.value = ''; // Limpa o input
+        await carregarMetas(); // Recarrega a tela
     } else {
-        mostrarNotificacao('Valor adicionado à meta com sucesso!', 'sucesso');
-        await carregarMetas(); // Recarrega a tela com a barrinha atualizada
+        console.error("Erro ao adicionar aporte:", error);
     }
 }
 
-// Lógica MVP para criar uma nova meta rápido (sem precisar fazer modal agora)
-document.getElementById('btn-nova-meta')?.addEventListener('click', async () => {
-    const nome = prompt('Qual o nome da sua nova meta? (Ex: Reserva de Emergência)');
-    if (!nome) return;
-    
-    const valorAlvo = parseFloat(prompt('Qual o valor total que você quer alcançar? (Ex: 5000)'));
-    if (isNaN(valorAlvo) || valorAlvo <= 0) return;
+// 3. DELETAR META (DELETE)
+window.excluirMeta = async function(idMeta) {
+    if (!confirm('Tem certeza que deseja excluir esta meta?')) return;
 
-    const { error } = await cliente_supabase.from('metas').insert([{
-        user_id: usuarioLogado.id,
-        nome: nome,
-        valor_alvo: valorAlvo,
-        valor_atual: 0
-    }]);
+    const { error } = await cliente_supabase
+        .from('metas')
+        .delete()
+        .eq('id', idMeta)
+        .eq('user_id', usuarioLogado.id);
 
     if (!error) {
         await carregarMetas();
+    } else {
+        console.error("Erro ao excluir meta:", error);
+    }
+}
+
+// 4. LÓGICA DO MODAL (INSERT)
+document.addEventListener('DOMContentLoaded', () => {
+    const btnNovaMeta = document.getElementById('btn-nova-meta');
+    const modalMeta = document.getElementById('modal-meta-overlay');
+    const btnFecharMeta = document.getElementById('btn-fechar-modal-meta');
+    const formMeta = document.getElementById('form-nova-meta');
+
+    // Abrir Modal
+    if (btnNovaMeta && modalMeta) {
+        btnNovaMeta.addEventListener('click', () => {
+            modalMeta.style.display = 'flex';
+        });
+    }
+
+    // Fechar Modal
+    if (btnFecharMeta && modalMeta) {
+        btnFecharMeta.addEventListener('click', () => {
+            modalMeta.style.display = 'none';
+        });
+    }
+
+    // Enviar Formulário (Salvar no Banco)
+    if (formMeta) {
+        formMeta.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const nome = document.getElementById('input-meta-nome').value;
+            const valorAlvo = parseFloat(document.getElementById('input-meta-valor').value);
+
+            if (!usuarioLogado) return;
+
+            const { error } = await cliente_supabase.from('metas').insert([{
+                user_id: usuarioLogado.id,
+                nome: nome,
+                valor_alvo: valorAlvo,
+                valor_atual: 0
+            }]);
+
+            if (!error) {
+                modalMeta.style.display = 'none'; // Fecha o modal
+                formMeta.reset(); // Limpa o formulário
+                await carregarMetas(); // Renderiza a nova meta na tela
+            } else {
+                console.error("Erro ao criar meta:", error);
+            }
+        });
     }
 });
