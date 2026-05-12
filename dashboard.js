@@ -81,8 +81,6 @@ function renderizarTabela() {
                     </div>
                 </div>
             </td>
-            <td style="display:none;">${t.categoria}</td>
-            <td style="display:none;">${formatarData(t.data)}</td>
             <td style="color:${cor}; font-weight:700;">${sinal} ${formatarMoeda(t.valor)}</td>
             <td><button onclick="excluirTransacao(${t.id})" style="color:#ef4444; border:none; background:none; cursor:pointer; font-size:1.1rem;">🗑</button></td>
         `;
