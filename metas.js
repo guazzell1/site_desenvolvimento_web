@@ -22,11 +22,16 @@ async function carregarMetas() {
 
 function renderizarMetas(metas) {
     const container = document.getElementById('grid-de-metas');
+    const displayTotal = document.getElementById('display-total-economizado'); // Pega o h2 da esquerda
     if (!container) return;
 
     container.innerHTML = ''; 
+    let totalAcumulado = 0; // Nasce a variável do somatório
 
     metas.forEach(meta => {
+        // Soma o dinheiro guardado nesta meta ao montante geral
+        totalAcumulado += parseFloat(meta.valor_atual) || 0;
+
         const porcentagem = meta.valor_alvo > 0 ? ((meta.valor_atual / meta.valor_alvo) * 100).toFixed(0) : 0;
         const valorFaltante = meta.valor_alvo - meta.valor_atual;
         const formatarBRL = (valor) => valor.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -40,24 +45,29 @@ function renderizarMetas(metas) {
                 <button class="btn-remover-meta" onclick="excluirMeta('${meta.id}')">🗑</button>
             </div>
             <div>
-                <p class="meta-valor-atual" style="color: #3b82f6;">R$ ${formatarBRL(meta.valor_atual)}</p>
+                <p class="meta-valor-atual">R$ ${formatarBRL(meta.valor_atual)}</p>
                 <p class="meta-de">de R$ ${formatarBRL(meta.valor_alvo)}</p>
             </div>
-            <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin: 12px 0;">
                 <div class="progress-bar" style="flex: 1;">
-                    <div class="progress-fill" style="width: ${porcentagem > 100 ? 100 : porcentagem}%; background-color: #3b82f6;"></div>
+                    <div class="progress-fill" style="width: ${porcentagem > 100 ? 100 : porcentagem}%;"></div>
                 </div>
                 <span class="meta-pct" style="margin-left: 12px;">${porcentagem}%</span>
             </div>
             <p class="meta-faltam">Faltam R$ ${formatarBRL(valorFaltante)}</p>
-            <div class="meta-input-row">
+            <div class="meta-input-row" style="margin-top: 12px;">
                 <input type="number" id="aporte-${meta.id}" placeholder="R$ 0,00" step="0.01">
-                <button class="btn-adicionar-meta" style="background-color: #3b82f6;" onclick="adicionarAporte('${meta.id}', ${meta.valor_atual})">+ Adicionar</button>
+                <button class="btn-adicionar-meta" onclick="adicionarAporte('${meta.id}', ${meta.valor_atual})">+ Adicionar</button>
             </div>
         `;
         
         container.appendChild(card);
     });
+
+    // Atualiza o visor da esquerda com o total
+    if (displayTotal) {
+        displayTotal.textContent = `R$ ${totalAcumulado.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    }
 }
 
 // 2. APORTAR DINHEIRO (UPDATE)
@@ -103,34 +113,16 @@ window.excluirMeta = async function(idMeta) {
     }
 }
 
-// 4. LÓGICA DO MODAL (INSERT)
+// 4. LÓGICA DO FORMULÁRIO LATERAL (INSERT)
 document.addEventListener('DOMContentLoaded', () => {
-    const btnNovaMeta = document.getElementById('btn-nova-meta');
-    const modalMeta = document.getElementById('modal-meta-overlay');
-    const btnFecharMeta = document.getElementById('btn-fechar-modal-meta');
-    const formMeta = document.getElementById('form-nova-meta');
+    const formMetaInline = document.getElementById('form-nova-meta-inline');
 
-    // Abrir Modal
-    if (btnNovaMeta && modalMeta) {
-        btnNovaMeta.addEventListener('click', () => {
-            modalMeta.style.display = 'flex';
-        });
-    }
-
-    // Fechar Modal
-    if (btnFecharMeta && modalMeta) {
-        btnFecharMeta.addEventListener('click', () => {
-            modalMeta.style.display = 'none';
-        });
-    }
-
-    // Enviar Formulário (Salvar no Banco)
-    if (formMeta) {
-        formMeta.addEventListener('submit', async (e) => {
+    if (formMetaInline) {
+        formMetaInline.addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            const nome = document.getElementById('input-meta-nome').value;
-            const valorAlvo = parseFloat(document.getElementById('input-meta-valor').value);
+            const nome = document.getElementById('input-meta-nome-inline').value.trim();
+            const valorAlvo = parseFloat(document.getElementById('input-meta-valor-inline').value);
 
             if (!usuarioLogado) return;
 
@@ -142,9 +134,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }]);
 
             if (!error) {
-                modalMeta.style.display = 'none'; // Fecha o modal
-                formMeta.reset(); // Limpa o formulário
-                await carregarMetas(); // Renderiza a nova meta na tela
+                formMetaInline.reset(); // Limpa os campos após salvar
+                await carregarMetas(); // Renderiza o novo card instantaneamente
             } else {
                 console.error("Erro ao criar meta:", error);
             }
