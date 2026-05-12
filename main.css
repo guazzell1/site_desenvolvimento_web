@@ -554,14 +554,11 @@ td {
     align-items: center;
 }
 
-<<<<<<< HEAD
-=======
 .meta-card:hover {
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     transform: translateY(-2px); /* Efeito sutil de levantar ao passar o mouse */
 }
 
->>>>>>> main
 .meta-nome {
     font-size: 0.875rem;
     font-weight: 600;
@@ -620,8 +617,6 @@ td {
     font-size: 0.875rem;
     font-weight: 600;
     cursor: pointer;
-<<<<<<< HEAD
-=======
 }
 
 
@@ -965,5 +960,4 @@ td {
   border-radius: 12px;
   max-width: 400px;
   max-height: 400px;
->>>>>>> main
 }
