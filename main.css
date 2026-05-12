@@ -1056,3 +1056,11 @@ td {
     transition: color 0.2s; 
 }
 .tx-method:hover { color: #ef4444; }
+
+#grafico-fluxo {
+    max-height: 250px;
+}
+
+#grafico-categorias {
+    max-height: 250px;
+}

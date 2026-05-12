@@ -67,10 +67,20 @@
                 </div>
                 <!-- Fim da tabela-container -->
 
-                <!-- GRÁFICO -->
-                <div class="grafico-container">
-                    <h3>Gastos por Categoria</h3>
-                    <canvas id="grafico-categorias"></canvas>
+                <!-- GRÁFICOS LADO A LADO -->
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px; margin-top: 2rem;">
+    
+                    <div class="grafico-container" style="max-width: 100%; max-height: 100%;">
+                        <h3>Fluxo de Caixa</h3>
+                        <p style="font-size: 0.875rem; color: #64748b; margin-bottom: 1rem;">Comparativo mensal de entradas e saídas</p>
+                        <canvas id="grafico-fluxo"></canvas>
+                    </div>
+
+                    <div class="grafico-container" style="max-width: 100%; max-height: 100%;">
+                        <h3>Gastos por Categoria</h3>
+                        <canvas id="grafico-categorias"></canvas>
+                    </div>
+
                 </div>
 
             </div> <!-- FECHAMENTO CORRETO DA PAGINA-DASHBOARD (Aqui é o lugar certo) -->
