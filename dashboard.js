@@ -55,3 +55,39 @@ function renderizarTabela() {
         tbody.appendChild(tr);
     });
 }
+
+// ==========================================
+// ROTEAMENTO SPA (Navegação do Menu Lateral)
+// ==========================================
+
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Seleciona todos os botões do menu e todas as páginas
+    const navButtons = document.querySelectorAll('.nav-btn');
+    const pages = document.querySelectorAll('.page-content');
+
+    // 2. Adiciona o evento de clique em cada botão
+    navButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            
+            // Remove a classe 'active' de todos os botões
+            navButtons.forEach(btn => btn.classList.remove('active'));
+            
+            // Adiciona a classe 'active' apenas no botão clicado
+            button.classList.add('active');
+
+            // Esconde todas as páginas
+            pages.forEach(page => {
+                page.style.display = 'none';
+            });
+
+            // Descobre qual página abrir lendo o "data-target" do botão
+            const targetId = button.getAttribute('data-target');
+            const targetPage = document.getElementById(targetId);
+            
+            // Mostra a página correta
+            if (targetPage) {
+                targetPage.style.display = 'block';
+            }
+        });
+    });
+});
