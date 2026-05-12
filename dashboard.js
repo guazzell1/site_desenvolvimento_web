@@ -45,10 +45,15 @@ function renderizarTabela() {
     if (!tbody) return;
     tbody.innerHTML = "";
 
-    const recentes = transacoes.slice(0, 5); // Pega só as 5 últimas pro painel
+    // Ordena por data mais recente primeiro
+    const ordenadas = [...transacoes].sort(function(a, b) {
+        return new Date(b.data) - new Date(a.data);
+    });
+
+    const recentes = ordenadas.slice(0, 5); // Pega só as 5 mais recentes
 
     if (recentes.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:2rem; color:#888;">Nenhuma transação cadastrada ainda.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding:2rem; color:#888;">Nenhuma transação cadastrada ainda.</td></tr>`;
         return;
     }
 
