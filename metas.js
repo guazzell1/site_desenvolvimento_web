@@ -25,9 +25,31 @@ function renderizarMetas(metas) {
     const displayTotal = document.getElementById('display-total-economizado'); // Pega o h2 da esquerda
     if (!container) return;
 
-    container.innerHTML = ''; 
+    container.innerHTML = '';
     let totalAcumulado = 0; // Nasce a variável do somatório
 
+    // VERIFICAÇÃO DE EMPTY STATE (Corrigida)
+    if (!metas || metas.length === 0) {
+        // Usa a variável 'container' corretamente
+        container.innerHTML = `
+            <div style="text-align: center; padding: 48px 24px; background-color: #ffffff; border: 2px dashed #e2e8f0; border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                <div style="width: 64px; height: 64px; background-color: #f1f5f9; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin-bottom: 16px;">
+                    🎯
+                </div>
+                <h4 style="color: #0f172a; font-size: 1.15rem; font-weight: 700; margin-bottom: 8px;">Nenhuma meta por aqui</h4>
+                <p style="color: #64748b; font-size: 0.95rem; line-height: 1.5; max-width: 300px;">Você ainda não possui metas ativas. Comece a planejar o seu futuro criando a primeira no formulário ao lado!</p>
+            </div>
+        `;
+        
+        // Garante que o visor da esquerda seja zerado se não houver metas
+        if (displayTotal) {
+            displayTotal.textContent = `R$ 0,00`;
+        }
+        
+        return; // Agora sim paramos a função com segurança
+    }
+
+    // LOOP DAS METAS EXISTENTES
     metas.forEach(meta => {
         // Soma o dinheiro guardado nesta meta ao montante geral
         totalAcumulado += parseFloat(meta.valor_atual) || 0;
@@ -38,12 +60,11 @@ function renderizarMetas(metas) {
 
         const card = document.createElement('div');
         card.className = 'meta-card';
-        
+
         card.innerHTML = `
             <!-- Cabeçalho do Card -->
             <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
                 <div style="display: flex; gap: 12px; align-items: center;">
-                    <!-- Ícone Decorativo (Opcional) -->
                     <div style="width: 40px; height: 40px; border-radius: 10px; background-color: rgba(0, 208, 156, 0.1); display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
                         🎯
                     </div>
@@ -65,7 +86,7 @@ function renderizarMetas(metas) {
                     <span style="color: #00d09c; font-weight: 900; font-size: 0.875rem;">${porcentagem}%</span>
                 </div>
                 
-                <!-- Barra (Mais fina e arredondada) -->
+                <!-- Barra -->
                 <div style="width: 100%; height: 8px; background-color: #f1f5f9; border-radius: 999px; overflow: hidden;">
                     <div style="height: 100%; background-color: #00d09c; border-radius: 999px; width: ${porcentagem > 100 ? 100 : porcentagem}%; transition: width 0.5s ease;"></div>
                 </div>
@@ -77,18 +98,18 @@ function renderizarMetas(metas) {
                 <button onclick="adicionarAporte('${meta.id}', ${meta.valor_atual})" style="background-color: #00d09c; color: white; border: none; border-radius: 8px; padding: 0 16px; font-weight: 600; font-size: 0.875rem; cursor: pointer; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='#00a67c'" onmouseout="this.style.backgroundColor='#00d09c'">+ Salvar</button>
             </div>
         `;
-        
+
         container.appendChild(card);
     });
 
-    // Atualiza o visor da esquerda com o total
+    // Atualiza o visor da esquerda com o total (quando existem metas)
     if (displayTotal) {
         displayTotal.textContent = `R$ ${totalAcumulado.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
     }
 }
 
 // 2. APORTAR DINHEIRO (UPDATE)
-window.adicionarAporte = async function(idMeta, valorAtual) {
+window.adicionarAporte = async function (idMeta, valorAtual) {
     const inputField = document.getElementById(`aporte-${idMeta}`);
     const valorAporte = parseFloat(inputField.value);
 
@@ -114,7 +135,7 @@ window.adicionarAporte = async function(idMeta, valorAtual) {
 }
 
 // 3. DELETAR META (DELETE)
-window.excluirMeta = async function(idMeta) {
+window.excluirMeta = async function (idMeta) {
     if (!confirm('Tem certeza que deseja excluir esta meta?')) return;
 
     const { error } = await cliente_supabase
@@ -137,7 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (formMetaInline) {
         formMetaInline.addEventListener('submit', async (e) => {
             e.preventDefault();
-            
+
             const nome = document.getElementById('input-meta-nome-inline').value.trim();
             const valorAlvo = parseFloat(document.getElementById('input-meta-valor-inline').value);
 
