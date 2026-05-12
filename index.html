@@ -18,12 +18,14 @@
                 <p>Financial Clarity</p>
             </div>
             <nav class="sidebar-nav">
-                <button>Dashboard</button>
-                <button>Transações</button>
-                <button>Orçamentos</button>
+                <button id="nav-dashboard" class="nav-btn active" data-target="pagina-dashboard">Dashboard</button>
+                <button id="nav-transacoes" class="nav-btn" data-target="pagina-transacoes">Transações</button>
+                <button id="nav-orcamentos" class="nav-btn" data-target="pagina-orcamentos">Orçamentos</button>
+                <button id="nav-metas" class="nav-btn" data-target="pagina-metas">Metas</button>
             </nav>
-            <div class="sidebar-footer">
-                <button class="btn-nova-transacao">+ Nova Transação</button>
+            <div class="sidebar-footer" style="display: flex; flex-direction: column; gap: 12px;">
+                <button class="btn-nova-transacao" id="btn-abrir-modal">+ Nova Transação</button>
+                <button id="btn-sair" style="color: #ef4444; font-weight: 600; cursor: pointer; border: none; background: transparent; padding: 10px; text-align: left;">Sair da Conta</button>
             </div>
         </aside>
         <main id="main-content">
@@ -69,6 +71,16 @@
                         <tbody id="lista-transacoes"></tbody>
                     </table>
                 </div>
+                </div>
+                <!-- Fim da tabela-container -->
+
+                <!-- GRÁFICO — adicionado pelo Aluno 3 -->
+                <div class="grafico-container">
+                    <h3>Gastos por Categoria</h3>
+                    <canvas id="grafico-categorias"></canvas>
+                </div>
+
+            </div>
             </div>
             <div class="page-content" id="pagina-transacoes">
                 <div class="page-header">
@@ -128,39 +140,18 @@
                     </div>
                 </div>
             </div>
-            <div class="page-content" id="pagina-metas">
-                <div class="page-header">
-                    <div>
-                        <h2>Metas de Poupança</h2>
-                        <p>Acompanhe o progresso dos seus objetivos financeiros.</p>
-                    </div>
-                    <button class="btn-nova-meta">+ Nova Meta</button>
-                </div>
+            <div class="page-content" id="pagina-metas" style="display: none;">
+    <div class="page-header">
+        <div>
+            <h2>Metas de Poupança</h2>
+            <p>Acompanhe o progresso dos seus objetivos financeiros.</p>
+        </div>
+        <button class="btn-nova-meta" id="btn-nova-meta">+ Nova Meta</button>
+    </div>
 
-                <div class="metas-grid">
-                    <div class="meta-card">
-                        <div class="meta-card-header">
-                            <span class="meta-nome">Viagem para Europa</span>
-                            <button class="btn-remover-meta">🗑</button>
-                        </div>
-                        <div>
-                            <p class="meta-valor-atual" style="color: #3b82f6;">R$ 4.500,00</p>
-                            <p class="meta-de">de R$ 15.000,00</p>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <div class="progress-bar" style="flex: 1;">
-                                <div class="progress-fill" style="width: 30%; background-color: #3b82f6;"></div>
-                            </div>
-                            <span class="meta-pct">30%</span>
-                        </div>
-                        <p class="meta-faltam">Faltam R$ 10.500,00</p>
-                        <div class="meta-input-row">
-                            <input type="number" placeholder="R$ 0,00">
-                            <button class="btn-adicionar-meta" style="background-color: #3b82f6;">+ Adicionar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <div class="metas-grid" id="grid-de-metas">
+    </div>
+</div>
 
 
         </main>
@@ -206,15 +197,12 @@
             </form>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-    <script src="supabase-config.js"></script>
-    
-    <script src="dashboard.js"></script>
-    
-    <script src="forms.js"></script>
-
-    <script src="data.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="data.js"></script>
+<script src="dashboard.js"></script>
+<script src="forms.js"></script>
 </body>
 
 </html>
