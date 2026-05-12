@@ -31,7 +31,8 @@ function atualizarTela() {
 
     renderizarTabela();
     renderizarGrafico();
-
+    renderizarGraficoLinha(); 
+    
     // Sincroniza a página de transações se ela existir!
     if (typeof aplicarFiltrosNaPagina === 'function') {
         aplicarFiltrosNaPagina();
