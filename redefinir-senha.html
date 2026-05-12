@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centz - Redefinir Senha</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ========================================== */
+        /* RESET E VARIÁVEIS                          */
+        /* ========================================== */
+        :root {
+            --primary: #00d09c;
+            --primary-hover: #00a67c;
+            --ink: #0f172a;
+            --slate-400: #94a3b8;
+            --slate-500: #64748b;
+            --slate-200: #e2e8f0;
+            --bg-light: #f1f5f9;
+            --bg-dark: #0f2320;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--ink);
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        /* ========================================== */
+        /* LAYOUT DO CARD CENTRALIZADO                */
+        /* ========================================== */
+        .recovery-container {
+            width: 100%;
+            max-width: 1000px;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+            display: flex;
+            overflow: hidden;
+            min-height: 550px;
+        }
+
+        /* COLUNA ESQUERDA (Formulário) */
+        .recovery-left {
+            flex: 1;
+            padding: 64px 48px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 12px;
+            color: var(--ink);
+        }
+
+        .header p {
+            color: var(--slate-500);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 32px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--ink);
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 14px 16px 14px 44px;
+            border: 1px solid var(--slate-200);
+            border-radius: 12px;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .input-field:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(0, 208, 156, 0.1);
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            color: var(--slate-400);
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 16px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 8px 16px rgba(0, 208, 156, 0.2);
+            transition: all 0.2s;
+            margin-top: 8px;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .back-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 32px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: opacity 0.2s;
+        }
+
+        .back-link:hover {
+            opacity: 0.8;
+        }
+
+        /* ========================================== */
+        /* COLUNA DIREITA (Decorativa / Glassmorphism)*/
+        /* ========================================== */
+        .recovery-right {
+            flex: 1;
+            background-color: var(--bg-dark);
+            position: relative;
+            display: none; /* Esconde no mobile */
+            align-items: center;
+            justify-content: center;
+            padding: 48px;
+            overflow: hidden;
+        }
+
+        @media (min-width: 800px) {
+            .recovery-right {
+                display: flex;
+            }
+        }
+
+        /* Efeitos de Luz de Fundo */
+        .glow-1 {
+            position: absolute;
+            top: -10%; right: -10%;
+            width: 300px; height: 300px;
+            background: rgba(0, 208, 156, 0.2);
+            border-radius: 50%;
+            filter: blur(80px);
+        }
+
+        .glow-2 {
+            position: absolute;
+            bottom: -10%; left: -10%;
+            width: 300px; height: 300px;
+            background: rgba(0, 208, 156, 0.1);
+            border-radius: 50%;
+            filter: blur(80px);
+        }
+
+        /* Cartão de Vidro (Glass) */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 360px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .glass-icon {
+            width: 56px; height: 56px;
+            background-color: var(--primary);
+            border-radius: 16px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.8rem;
+            color: white;
+            margin-bottom: 24px;
+            box-shadow: 0 12px 24px rgba(0, 208, 156, 0.3);
+        }
+
+        .glass-card h2 {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .glass-card p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .security-badge {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .pulse-dot {
+            width: 10px; height: 10px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            box-shadow: 0 0 0 0 rgba(0, 208, 156, 0.7);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 208, 156, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(0, 208, 156, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 208, 156, 0); }
+        }
+
+        .security-badge span {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Container de Notificações (Toast) -->
+    <div id="toast-container" style="position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px;"></div>
+
+    <div class="recovery-container">
+        
+        <!-- Lado Esquerdo: Formulário -->
+        <div class="recovery-left">
+            <div class="header">
+                <h1>Criar nova senha</h1>
+                <p>Sua nova senha deve ser diferente das senhas usadas anteriormente para garantir sua segurança.</p>
+            </div>
+
+            <form id="form-redefinir-senha">
+                <div class="input-group">
+                    <label for="input-nova-senha">Nova Senha</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">🔒</span>
+                        <input type="password" id="input-nova-senha" class="input-field" placeholder="Mínimo de 8 caracteres" required minlength="8">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="input-confirma-senha">Confirmar Nova Senha</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">🔐</span>
+                        <input type="password" id="input-confirma-senha" class="input-field" placeholder="Repita a nova senha" required minlength="8">
+                    </div>
+                </div>
+
+                <button type="submit" id="btn-salvar-senha" class="btn-primary">Atualizar Senha</button>
+            </form>
+
+            <a href="login.html" class="back-link">
+                ← Voltar para o login
+            </a>
+        </div>
+
+        <!-- Lado Direito: Ilustração Glass -->
+        <div class="recovery-right">
+            <div class="glow-1"></div>
+            <div class="glow-2"></div>
+
+            <div class="glass-card">
+                <div class="glass-icon">🛡️</div>
+                <h2>Segurança em<br>primeiro lugar</h2>
+                <p>Sua proteção é nossa prioridade. Utilize esta página criptografada para redefinir seu acesso com total segurança.</p>
+                
+                <div class="security-badge">
+                    <div class="pulse-dot"></div>
+                    <span>Criptografia Ativa</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="auth.js"></script>
+</body>
+</html>

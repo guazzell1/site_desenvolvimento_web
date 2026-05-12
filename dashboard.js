@@ -193,3 +193,31 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
+// ==========================================
+// LOGOUT (Sair da Conta)
+// ==========================================
+const btnSair = document.getElementById('btn-sair');
+
+if (btnSair) {
+    btnSair.addEventListener('click', async () => {
+        // Feedback visual
+        const textoOriginal = btnSair.textContent;
+        btnSair.textContent = 'Saindo...';
+        
+        // Esquece a preferência do usuário
+        localStorage.removeItem('manterConectado');
+        
+        // Pede pro Supabase encerrar a sessão
+        const { error } = await cliente_supabase.auth.signOut();
+        
+        if (error) {
+            console.error("Erro ao fazer logout:", error);
+            alert("Erro ao sair da conta.");
+            btnSair.textContent = textoOriginal;
+        } else {
+            // Sessão limpa! Manda de volta para a tela de login
+            window.location.href = 'login.html'; // Se você salvou como auth.html, mude o nome aqui!
+        }
+    });
+}
