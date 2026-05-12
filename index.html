@@ -18,12 +18,22 @@
                 <p>Financial Clarity</p>
             </div>
             <nav class="sidebar-nav">
+<<<<<<< HEAD
                 <button>Dashboard</button>
                 <button>Transações</button>
                 <button>Orçamentos</button>
+=======
+                <button id="nav-dashboard" class="nav-btn active" data-target="pagina-dashboard">Dashboard</button>
+                <button id="nav-transacoes" class="nav-btn" data-target="pagina-transacoes">Transações</button>
+                <button id="nav-orcamentos" class="nav-btn" data-target="pagina-orcamentos">Orçamentos</button>
+                <button id="nav-metas" class="nav-btn" data-target="pagina-metas">Metas</button>
+>>>>>>> main
             </nav>
-            <div class="sidebar-footer">
-                <button class="btn-nova-transacao">+ Nova Transação</button>
+            <div class="sidebar-footer" style="display: flex; flex-direction: column; gap: 12px;">
+                <button class="btn-nova-transacao" id="btn-abrir-modal">+ Nova Transação</button>
+                <button id="btn-sair"
+                    style="color: #ef4444; font-weight: 600; cursor: pointer; border: none; background: transparent; padding: 10px; text-align: left;">Sair
+                    da Conta</button>
             </div>
         </aside>
         <main id="main-content">
@@ -69,7 +79,51 @@
                         <tbody id="lista-transacoes"></tbody>
                     </table>
                 </div>
+                <!-- Fim da tabela-container -->
+
+                <!-- GRÁFICO -->
+                <div class="grafico-container">
+                    <h3>Gastos por Categoria</h3>
+                    <canvas id="grafico-categorias"></canvas>
+                </div>
+
+            </div> <!-- FECHAMENTO CORRETO DA PAGINA-DASHBOARD (Aqui é o lugar certo) -->
+
+            <!-- div transacoes-->
+            <div class="page-content" id="pagina-transacoes">
+                <div class="page-content" id="pagina-transacoes">
+                    <div class="page-header">
+                        <div>
+                            <h2>Transações</h2>
+                            <p>Histórico completo de entradas e saídas.</p>
+                        </div>
+                        <div class="header-actions">
+                            <div class="filtros">
+                                <button class="filtro-btn ativo">Todas</button>
+                                <button class="filtro-btn">Receitas</button>
+                                <button class="filtro-btn">Despesas</button>
+                            </div>
+                            <button class="btn-exportar">⬇ Exportar CSV</button>
+                        </div>
+                    </div>
+
+                    <div class="tabela-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Descrição</th>
+                                    <th>Categoria</th>
+                                    <th>Data</th>
+                                    <th>Valor</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="lista-transacoes-completa"></tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
+<<<<<<< HEAD
             <div class="page-content" id="pagina-transacoes">
                 <div class="page-header">
                     <div>
@@ -101,6 +155,10 @@
                     </table>
                 </div>
             </div>
+=======
+
+            <!-- div orcamento-->
+>>>>>>> main
             <div class="page-content" id="pagina-orcamentos">
                 <div class="page-header">
                     <div>
@@ -128,6 +186,7 @@
                     </div>
                 </div>
             </div>
+<<<<<<< HEAD
             <div class="page-content" id="pagina-metas">
                 <div class="page-header">
                     <div>
@@ -159,6 +218,53 @@
                             <button class="btn-adicionar-meta" style="background-color: #3b82f6;">+ Adicionar</button>
                         </div>
                     </div>
+=======
+
+            <!-- div metas -->
+            <div class="page-content" id="pagina-metas" style="display: none;">
+                <div class="page-header">
+                    <div>
+                        <h2>Metas de Poupança</h2>
+                        <p>Planeje o seu futuro financeiro e acompanhe seu patrimônio.</p>
+                    </div>
+                </div>
+
+                <div class="metas-layout">
+
+                    <aside class="metas-sidebar">
+                        <div class="card-total-glow">
+                            <h3 class="card-total-title">Total Economizado</h3>
+                            <p id="display-total-economizado" class="card-total-value">R$ 0,00</p>
+                        </div>
+
+                        <div class="card-form-meta">
+                            <h3>Criar Nova Meta</h3>
+                            <form id="form-nova-meta-inline" class="form-nova-meta">
+                                <div class="form-meta-group">
+                                    <label>Nome da Meta</label>
+                                    <input type="text" id="input-meta-nome-inline" placeholder="Ex: Viagem, Reserva..."
+                                        required>
+                                </div>
+                                <div class="form-meta-group">
+                                    <label>Valor Alvo (R$)</label>
+                                    <input type="number" id="input-meta-valor-inline" placeholder="Ex: 5000" step="0.01"
+                                        required>
+                                </div>
+                                <button type="submit" class="btn-meta-submit">+ Salvar Meta</button>
+                            </form>
+                        </div>
+                    </aside>
+
+                    <section style="display: flex; flex-direction: column;">
+                        <h3
+                            style="font-size: 1.25rem; font-weight: 600; color: #0f172a; margin-bottom: 16px; text-align: left;">
+                            Suas Metas Atuais</h3>
+
+                        <div class="metas-conteudo" id="grid-de-metas">
+                        </div>
+                    </section>
+
+>>>>>>> main
                 </div>
             </div>
 
@@ -206,6 +312,7 @@
             </form>
         </div>
     </div>
+<<<<<<< HEAD
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <script src="data.js"></script>
@@ -215,6 +322,16 @@
     <script src="forms.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="data.js"></script>
+=======
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="supabase-config.js"></script>
+    <script src="data.js"></script>
+    <script src="dashboard.js"></script>
+    <script src="forms.js"></script>
+    <script src="metas.js"></script>
+>>>>>>> main
 </body>
 
 </html>
