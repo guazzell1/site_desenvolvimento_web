@@ -2,92 +2,135 @@
 // dashboard.js — Renderização do DOM
 // ===================================================
 
+function formatarMoeda(valor) {
+  return valor.toLocaleString("pt-BR", {
+    style: "currency",
+    currency: "BRL"
+  });
+}
+
+function formatarData(dataString) {
+  return dataString.split('-').reverse().join('/');
+}
+
 function calcularEntradaDoMes() {
-    let total = 0;
-    transacoes.forEach(function(t) {
-        if (t.tipo === "receita") total += t.valor;
-    });
-    return total;
+  let total = 0;
+  transacoes.forEach(function(t) {
+    if (t.tipo === "receita") total += t.valor;
+  });
+  return total;
 }
 
 function calcularSaidaDoMes() {
-    let total = 0;
-    transacoes.forEach(function(t) {
-        if (t.tipo === "despesa") total += t.valor;
-    });
-    return total;
+  let total = 0;
+  transacoes.forEach(function(t) {
+    if (t.tipo === "despesa") total += t.valor;
+  });
+  return total;
 }
 
 function atualizarTela() {
-    console.log("Recebi o aviso do data.js! Desenhando a tela...");
+  const saldoAtual = calcularSaldoTotal();
+  const entradas   = calcularEntradaDoMes();
+  const saidas     = calcularSaidaDoMes();
 
-    const saldoAtual = calcularSaldoTotal(); 
-    const entradas = calcularEntradaDoMes();
-    const saídas = calcularSaidaDoMes();
+  document.querySelector('#display-saldo').innerText = formatarMoeda(saldoAtual);
+  document.querySelector('#card-income').innerText   = formatarMoeda(entradas);
+  document.querySelector('#card-expense').innerText  = formatarMoeda(saidas);
 
-    // 1. Injetando os valores nos IDs exatos do HTML do Aluno 1
-    document.querySelector('#display-saldo').innerText = `R$ ${saldoAtual.toFixed(2)}`;
-    document.querySelector('#card-income').innerText = `R$ ${entradas.toFixed(2)}`;
-    document.querySelector('#card-expense').innerText = `R$ ${saídas.toFixed(2)}`;
+  const elSaldo = document.querySelector('#display-saldo');
+  elSaldo.style.color = saldoAtual < 0 ? "#ef4444" : "";
 
-    renderizarTabela();
+  renderizarTabela();
+  renderizarGrafico();
 }
 
 function renderizarTabela() {
-    // 2. Pegando o ID exato do <tbody>
-    const tbody = document.querySelector('#lista-transacoes');
-    tbody.innerHTML = ""; // Limpa a tabela
+  const tbody         = document.querySelector('#lista-transacoes');
+  const tbodyCompleta = document.querySelector('#lista-transacoes-completa');
 
-    console.log(`Renderizando ${transacoes.length} transações na tabela...`);
+  tbody.innerHTML         = "";
+  tbodyCompleta.innerHTML = "";
 
-    transacoes.forEach(function(t) {
-        const tr = document.createElement('tr');
-        
-        // A ordem das colunas no HTML é: Descrição, Categoria, Data, Valor, Ação
-        tr.innerHTML = `
-            <td>${t.descricao}</td>
-            <td style="text-transform: capitalize;">${t.categoria}</td>
-            <td>${t.data.split('-').reverse().join('/')}</td>
-            <td>R$ ${t.valor.toFixed(2)}</td>
-            <td><button onclick="excluirTransacao(${t.id})" style="color: red; border: none; background: none; cursor: pointer;">X</button></td>
-        `;
-        
-        tbody.appendChild(tr);
-    });
+  if (transacoes.length === 0) {
+    const msgVazia = `
+      <tr>
+        <td colspan="5" style="text-align:center; padding:2rem; color:#888;">
+          Nenhuma transação cadastrada ainda.
+        </td>
+      </tr>
+    `;
+    tbody.innerHTML         = msgVazia;
+    tbodyCompleta.innerHTML = msgVazia;
+    return;
+  }
+
+  transacoes.forEach(function(t) {
+    const tr = document.createElement('tr');
+
+    const isReceita = t.tipo === "receita";
+    const cor       = isReceita ? "#22c55e" : "#ef4444";
+    const sinal     = isReceita ? "+" : "-";
+
+    tr.innerHTML = `
+      <td>${t.descricao}</td>
+      <td style="text-transform: capitalize;">${t.categoria}</td>
+      <td>${formatarData(t.data)}</td>
+      <td style="color: ${cor}; font-weight: 600;">${sinal} ${formatarMoeda(t.valor)}</td>
+      <td><button onclick="excluirTransacao(${t.id})" style="color:#ef4444; border:none; background:none; cursor:pointer;">🗑</button></td>
+    `;
+
+    tbody.appendChild(tr.cloneNode(true));
+    tbodyCompleta.appendChild(tr);
+  });
 }
 
-// ==========================================
-// ROTEAMENTO SPA (Navegação do Menu Lateral)
-// ==========================================
+let graficoCategorias = null;
 
-document.addEventListener('DOMContentLoaded', () => {
-    // 1. Seleciona todos os botões do menu e todas as páginas
-    const navButtons = document.querySelectorAll('.nav-btn');
-    const pages = document.querySelectorAll('.page-content');
+function renderizarGrafico() {
+  const despesas = transacoes.filter(function(t) {
+    return t.tipo === "despesa";
+  });
 
-    // 2. Adiciona o evento de clique em cada botão
-    navButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            
-            // Remove a classe 'active' de todos os botões
-            navButtons.forEach(btn => btn.classList.remove('active'));
-            
-            // Adiciona a classe 'active' apenas no botão clicado
-            button.classList.add('active');
+  const totais = {};
+  despesas.forEach(function(t) {
+    if (totais[t.categoria]) {
+      totais[t.categoria] += t.valor;
+    } else {
+      totais[t.categoria] = t.valor;
+    }
+  });
 
-            // Esconde todas as páginas
-            pages.forEach(page => {
-                page.style.display = 'none';
-            });
+  const labels  = Object.keys(totais);
+  const valores = Object.values(totais);
 
-            // Descobre qual página abrir lendo o "data-target" do botão
-            const targetId = button.getAttribute('data-target');
-            const targetPage = document.getElementById(targetId);
-            
-            // Mostra a página correta
-            if (targetPage) {
-                targetPage.style.display = 'block';
-            }
-        });
-    });
-});
+  if (labels.length === 0) return;
+
+  if (graficoCategorias) {
+    graficoCategorias.destroy();
+  }
+
+  const ctx = document.getElementById('grafico-categorias');
+  if (!ctx) return;
+
+  graficoCategorias = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: labels,
+      datasets: [{
+        data: valores,
+        backgroundColor: [
+          '#6366f1', '#22c55e', '#f59e0b',
+          '#ef4444', '#3b82f6', '#ec4899'
+        ]
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        legend: { position: 'bottom' }
+      }
+    }
+  });
+}
