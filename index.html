@@ -48,24 +48,36 @@
                         <h3 id="card-expense">R$0,00</h3>
                     </div>
                 </div>
-                <div class="tabela-container">
-                    <div class="tabela-header">
-                        <h3>Transações Recentes</h3>
-                    </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Descrição</th>
-                                <th>Categoria</th>
-                                <th>Data</th>
-                                <th>Valor</th>
-                                <th>Ação</th>
-                            </tr>
-                        </thead>
-                        <tbody id="lista-transacoes"></tbody>
-                    </table>
-                </div>
-                <!-- Fim da tabela-container -->
+                <!-- TRANSAÇÕES E METAS LADO A LADO -->
+<div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px; margin-top: 24px;">
+
+    <!-- Transações Recentes -->
+    <div class="tabela-container">
+        <div class="tabela-header">
+            <h3>Transações Recentes</h3>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Descrição</th>
+                    <th>Categoria</th>
+                    <th>Data</th>
+                    <th>Valor</th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+            <tbody id="lista-transacoes"></tbody>
+        </table>
+    </div>
+
+    <!-- Metas de Economia -->
+    <div class="tabela-container" style="padding: 20px;">
+        <h3 style="font-size: 0.875rem; font-weight: 700; color: #0f172a; margin-bottom: 16px;">Metas de Economia</h3>
+        <div id="dashboard-metas"></div>
+    </div>
+
+    </div>
+    <!-- Fim da tabela-container -->
 
                 <!-- GRÁFICOS LADO A LADO -->
                 <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px; margin-top: 2rem;">

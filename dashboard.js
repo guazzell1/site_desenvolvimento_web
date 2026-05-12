@@ -32,6 +32,7 @@ function atualizarTela() {
     renderizarTabela();
     renderizarGrafico();
     renderizarGraficoLinha(); 
+    renderizarMetasDashboard(); 
 
     // Sincroniza a página de transações se ela existir!
     if (typeof aplicarFiltrosNaPagina === 'function') {
@@ -265,5 +266,54 @@ function renderizarGraficoLinha() {
         }
       }
     }
+  });
+}
+
+async function renderizarMetasDashboard() {
+  const container = document.getElementById('dashboard-metas');
+  if (!container) return;
+  if (!usuarioLogado) return;
+
+  // Busca as metas do banco de dados
+  const { data: metas, error } = await cliente_supabase
+    .from('metas')
+    .select('*')
+    .eq('user_id', usuarioLogado.id)
+    .order('created_at', { ascending: false })
+    .limit(3); // mostra só as 3 primeiras no dashboard
+
+  if (error || !metas || metas.length === 0) {
+    container.innerHTML = `
+      <p style="text-align:center; color:#94a3b8; font-size:0.875rem; padding: 1rem;">
+        Nenhuma meta cadastrada ainda.
+      </p>
+    `;
+    return;
+  }
+
+  container.innerHTML = "";
+
+  metas.forEach(function(meta) {
+    const pct = meta.valor_alvo > 0
+      ? Math.min(Math.round((meta.valor_atual / meta.valor_alvo) * 100), 100)
+      : 0;
+
+    const div = document.createElement('div');
+    div.style.marginBottom = '16px';
+
+    div.innerHTML = `
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+        <p style="font-size:0.875rem; font-weight:600; color:#0f172a; margin:0;">${meta.nome}</p>
+        <span style="font-size:0.75rem; font-weight:700; color:#00d09c;">${pct}%</span>
+      </div>
+      <p style="font-size:0.75rem; color:#94a3b8; margin:0 0 6px 0;">
+        Meta: R$ ${meta.valor_alvo.toLocaleString('pt-BR', {minimumFractionDigits:2})}
+      </p>
+      <div style="width:100%; height:6px; background:#f1f5f9; border-radius:999px; overflow:hidden;">
+        <div style="height:100%; width:${pct}%; background:#00d09c; border-radius:999px;"></div>
+      </div>
+    `;
+
+    container.appendChild(div);
   });
 }
