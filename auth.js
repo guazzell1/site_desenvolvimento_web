@@ -93,30 +93,6 @@ if (formCadastro) {
             }, 1500);
         }
     });
-
-    // ==========================================
-    // AUTENTICAÇÃO COM GOOGLE (OAuth)
-    // ==========================================
-    const btnGoogle = document.getElementById('btn-google');
-    
-    if (btnGoogle) {
-        btnGoogle.addEventListener('click', async () => {
-            // Pega a URL base do seu Live Server (ex: http://127.0.0.1:5500)
-            const siteUrl = window.location.origin;
-
-            const { data, error } = await cliente_supabase.auth.signInWithOAuth({
-                provider: 'google',
-                options: {
-                    redirectTo: `${siteUrl}/index.html` // Destino após logar no Google
-                }
-            });
-
-            if (error) {
-                mostrarNotificacao('Erro ao conectar com o Google.', 'erro');
-                console.error("Erro Google OAuth:", error);
-            }
-        });
-    }
 }
 
 // ==========================================
