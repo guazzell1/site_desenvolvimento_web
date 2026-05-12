@@ -113,8 +113,33 @@ function renderizarGrafico() {
   const ctx = document.getElementById('grafico-categorias');
   if (!ctx) return;
 
+  // Plugin que desenha o total no centro do gráfico
+  const pluginTotalCentro = {
+    id: 'totalCentro',
+    beforeDraw: function(chart) {
+      const ctx = chart.ctx;
+      const width = chart.width;
+      const height = chart.height;
+
+      // Soma todos os valores para mostrar o total
+      const total = chart.data.datasets[0].data.reduce(function(a, b) {
+        return a + b;
+      }, 0);
+
+      ctx.restore();
+      ctx.font = 'bold 14px Inter';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = '#1e293b';
+      ctx.textAlign = 'center';
+
+      ctx.fillText(formatarMoeda(total), width / 2, height / 2);
+      ctx.save();
+    }
+  };
+
   graficoCategorias = new Chart(ctx, {
     type: 'doughnut',
+    plugins: [pluginTotalCentro],
     data: {
       labels: labels,
       datasets: [{
@@ -128,6 +153,7 @@ function renderizarGrafico() {
     options: {
       responsive: true,
       maintainAspectRatio: true,
+      cutout: '70%',
       plugins: {
         legend: { position: 'bottom' }
       }
