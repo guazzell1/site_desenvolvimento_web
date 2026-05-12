@@ -51,18 +51,39 @@ function renderizarTabela() {
         return;
     }
 
+    // Mapa de ícones por categoria
+    const icones = {
+        moradia: '🏠',
+        alimentacao: '🛒',
+        transporte: '🚗',
+        lazer: '🎮',
+        saude: '💊',
+        outros: '💰'
+    };
+
     recentes.forEach(function(t) {
         const isReceita = t.tipo === "receita";
         const cor = isReceita ? "#22c55e" : "#ef4444";
         const sinal = isReceita ? "+" : "-";
+        const icone = isReceita ? '💵' : (icones[t.categoria] || '💰');
         const tr = document.createElement('tr');
 
         tr.innerHTML = `
-            <td>${t.descricao}</td>
-            <td style="text-transform: capitalize;">${t.categoria}</td>
-            <td>${formatarData(t.data)}</td>
-            <td style="color: ${cor}; font-weight: 600;">${sinal} ${formatarMoeda(t.valor)}</td>
-            <td><button onclick="excluirTransacao(${t.id})" style="color:#ef4444; border:none; background:none; cursor:pointer; font-size: 1.1rem;">🗑</button></td>
+            <td>
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <div style="width:40px; height:40px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1.2rem; background-color:${isReceita ? '#dcfce7' : '#fee2e2'};">
+                        ${icone}
+                    </div>
+                    <div>
+                        <p style="font-weight:700; color:#0f172a; margin:0;">${t.descricao}</p>
+                        <p style="font-size:0.8rem; color:#64748b; margin:0; text-transform:capitalize;">${t.categoria} • ${formatarData(t.data)}</p>
+                    </div>
+                </div>
+            </td>
+            <td style="display:none;">${t.categoria}</td>
+            <td style="display:none;">${formatarData(t.data)}</td>
+            <td style="color:${cor}; font-weight:700;">${sinal} ${formatarMoeda(t.valor)}</td>
+            <td><button onclick="excluirTransacao(${t.id})" style="color:#ef4444; border:none; background:none; cursor:pointer; font-size:1.1rem;">🗑</button></td>
         `;
         tbody.appendChild(tr);
     });
