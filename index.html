@@ -111,10 +111,14 @@
                 </div>
 
                 <!-- Filtros Premium -->
-                <section class="filters-container">
+                <section class="filters-container" style="grid-template-columns: 2fr 1fr 1fr 1fr;">
                     <div class="filter-group">
                         <label>Buscar Atividades</label>
                         <input type="text" id="filtro-busca" class="filter-input" placeholder="Buscar por descrição...">
+                    </div>
+                    <div class="filter-group">
+                        <label>Mês</label>
+                        <input type="month" id="filtro-mes" class="filter-select">
                     </div>
                     <div class="filter-group">
                         <label>Categoria</label>
@@ -129,14 +133,14 @@
                         </select>
                     </div>
                     <div class="filter-group">
-                        <label>Tipo</label>
-                        <select id="filtro-tipo" class="filter-select">
-                            <option value="">Todos</option>
-                            <option value="receita">Receitas</option>
-                            <option value="despesa">Despesas</option>
-                        </select>
-                    </div>
-                </section>
+                    <label>Tipo</label>
+                    <select id="filtro-tipo" class="filter-select">
+                        <option value="">Todos</option>
+                        <option value="receita">Receitas</option>
+                        <option value="despesa">Despesas</option>
+                    </select>
+                </div>
+            </section>
 
                 <!-- Lista em Cards (O JS vai injetar aqui) -->
                 <div class="transactions-list" id="grid-transacoes-pagina">
