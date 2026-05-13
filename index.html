@@ -32,8 +32,16 @@
         </aside>
         <main id="main-content">
             <div class="page-content" id="pagina-dashboard">
-                <h2>Visão Geral</h2>
-                <p>Aqui está o resumo financeiro</p>
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                    <h2>Visão Geral</h2>
+                    <p>Aqui está o resumo financeiro</p>
+                </div>
+                <div class="filter-group">
+                    <label>Filtrar por Mês</label>
+                    <input type="month" id="filtro-mes-dashboard" class="filter-select" style="padding:8px 12px;">
+                </div>
+            </div>
                 <div class="cards-container">
                     <div class="card">
                         <p>Saldo Atual</p>
