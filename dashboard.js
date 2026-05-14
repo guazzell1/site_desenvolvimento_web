@@ -168,20 +168,28 @@ function renderizarGrafico(lista) {
 // ==========================================
 document.addEventListener('DOMContentLoaded', () => {
     const navButtons = document.querySelectorAll('.nav-btn');
+    const bottomNavButtons = document.querySelectorAll('.bottom-nav-btn');
+    const allNavButtons = [...navButtons, ...bottomNavButtons];
     const pages = document.querySelectorAll('.page-content');
 
-    if (navButtons.length === 0 || pages.length === 0) return;
+    if (allNavButtons.length === 0 || pages.length === 0) return;
 
-    navButtons.forEach(button => {
+    function navigateTo(targetId) {
+        pages.forEach(page => page.style.display = 'none');
+        const targetPage = document.getElementById(targetId);
+        if (targetPage) targetPage.style.display = 'block';
+
+        navButtons.forEach(btn => {
+            btn.classList.toggle('active', btn.getAttribute('data-target') === targetId);
+        });
+        bottomNavButtons.forEach(btn => {
+            btn.classList.toggle('active', btn.getAttribute('data-target') === targetId);
+        });
+    }
+
+    allNavButtons.forEach(button => {
         button.addEventListener('click', () => {
-            navButtons.forEach(btn => btn.classList.remove('active'));
-            button.classList.add('active');
-
-            pages.forEach(page => page.style.display = 'none');
-
-            const targetId = button.getAttribute('data-target');
-            const targetPage = document.getElementById(targetId);
-            if (targetPage) targetPage.style.display = 'block';
+            navigateTo(button.getAttribute('data-target'));
         });
     });
 
