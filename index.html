@@ -32,8 +32,16 @@
         </aside>
         <main id="main-content">
             <div class="page-content" id="pagina-dashboard">
-                <h2>Visão Geral</h2>
-                <p>Aqui está o resumo financeiro</p>
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                    <h2>Visão Geral</h2>
+                    <p>Aqui está o resumo financeiro</p>
+                </div>
+                <div class="filter-group">
+                    <label>Filtrar por Mês</label>
+                    <input type="month" id="filtro-mes-dashboard" class="filter-select" style="padding:8px 12px;">
+                </div>
+            </div>
                 <div class="cards-container">
                     <div class="card">
                         <p>Saldo Atual</p>
@@ -48,29 +56,55 @@
                         <h3 id="card-expense">R$0,00</h3>
                     </div>
                 </div>
-                <div class="tabela-container">
-                    <div class="tabela-header">
-                        <h3>Transações Recentes</h3>
-                    </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Descrição</th>
-                                <th>Categoria</th>
-                                <th>Data</th>
-                                <th>Valor</th>
-                                <th>Ação</th>
-                            </tr>
-                        </thead>
-                        <tbody id="lista-transacoes"></tbody>
-                    </table>
-                </div>
-                <!-- Fim da tabela-container -->
+                <!-- TRANSAÇÕES E METAS LADO A LADO -->
+<div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px; margin-top: 24px;">
 
-                <!-- GRÁFICO -->
-                <div class="grafico-container">
-                    <h3>Gastos por Categoria</h3>
-                    <canvas id="grafico-categorias"></canvas>
+    <!-- Transações Recentes -->
+    <div class="tabela-container">
+        <div class="tabela-header">
+            <h3>Transações Recentes</h3>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Descrição</th>
+                    <th>Valor</th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+            <tbody id="lista-transacoes"></tbody>
+        </table>
+        <div style="text-align:center; padding: 16px; border-top: 1px solid #f1f5f9;">
+            <button onclick="document.getElementById('nav-transacoes').click()"
+                    style="background:none; border:none; color:#00d09c; font-weight:600; font-size:0.875rem; cursor:pointer;">
+                Ver todas as transações →
+            </button>
+        </div>
+    </div>
+
+    <!-- Metas de Economia -->
+    <div class="tabela-container" style="padding: 20px;">
+        <h3 style="font-size: 0.875rem; font-weight: 700; color: #0f172a; margin-bottom: 16px;">Metas de Economia</h3>
+        <div id="dashboard-metas"></div>
+    </div>
+
+    </div>
+    <!-- Fim da tabela-container -->
+
+                <!-- GRÁFICOS LADO A LADO -->
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px; margin-top: 2rem;">
+    
+                    <div class="grafico-container" style="max-width: 100%; max-height: 100%;">
+                        <h3>Fluxo de Caixa</h3>
+                        <p style="font-size: 0.875rem; color: #64748b; margin-bottom: 1rem;">Comparativo mensal de entradas e saídas</p>
+                        <canvas id="grafico-fluxo"></canvas>
+                    </div>
+
+                    <div class="grafico-container" style="max-width: 100%; max-height: 100%;">
+                        <h3>Gastos por Categoria</h3>
+                        <canvas id="grafico-categorias"></canvas>
+                    </div>
+
                 </div>
 
             </div> <!-- FECHAMENTO CORRETO DA PAGINA-DASHBOARD (Aqui é o lugar certo) -->
@@ -85,10 +119,14 @@
                 </div>
 
                 <!-- Filtros Premium -->
-                <section class="filters-container">
+                <section class="filters-container" style="grid-template-columns: 2fr 1fr 1fr 1fr;">
                     <div class="filter-group">
                         <label>Buscar Atividades</label>
                         <input type="text" id="filtro-busca" class="filter-input" placeholder="Buscar por descrição...">
+                    </div>
+                    <div class="filter-group">
+                        <label>Mês</label>
+                        <input type="month" id="filtro-mes" class="filter-select">
                     </div>
                     <div class="filter-group">
                         <label>Categoria</label>
@@ -103,14 +141,14 @@
                         </select>
                     </div>
                     <div class="filter-group">
-                        <label>Tipo</label>
-                        <select id="filtro-tipo" class="filter-select">
-                            <option value="">Todos</option>
-                            <option value="receita">Receitas</option>
-                            <option value="despesa">Despesas</option>
-                        </select>
-                    </div>
-                </section>
+                    <label>Tipo</label>
+                    <select id="filtro-tipo" class="filter-select">
+                        <option value="">Todos</option>
+                        <option value="receita">Receitas</option>
+                        <option value="despesa">Despesas</option>
+                    </select>
+                </div>
+            </section>
 
                 <!-- Lista em Cards (O JS vai injetar aqui) -->
                 <div class="transactions-list" id="grid-transacoes-pagina">
