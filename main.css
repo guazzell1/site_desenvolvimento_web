@@ -1065,6 +1065,13 @@ td {
     max-height: 250px;
 }
 
+/* ========================================== */
+/* BOTÃO FLUTUANTE MOBILE                     */
+/* ========================================== */
+.btn-nova-transacao-mobile {
+    display: none;
+}
+
 @media (max-width: 768px) {
 
     #sidebar {
@@ -1133,4 +1140,25 @@ td {
     #pagina-metas {
         padding: 16px;
     }
+
+    /* Botão flutuante de nova transação no mobile */
+    .btn-nova-transacao-mobile {
+        display: flex;
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background-color: #059669;
+        color: white;
+        font-size: 1.5rem;
+        border: none;
+        cursor: pointer;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        z-index: 100;
+    }
 }
+
