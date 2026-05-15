@@ -63,11 +63,18 @@ function atualizarCategorias(tipo) {
 }
 
 
+function abrirModal() {
+    modalOverlay.style.display = 'flex';
+    atualizarCategorias(tipoAtual);
+}
+
 if (btnNovaTransacao) {
-    btnNovaTransacao.addEventListener('click', function() {
-        modalOverlay.style.display = 'flex'; 
-        atualizarCategorias(tipoAtual); 
-    });
+    btnNovaTransacao.addEventListener('click', abrirModal);
+}
+
+const btnFab = document.querySelector('#btn-fab-nova-transacao');
+if (btnFab) {
+    btnFab.addEventListener('click', abrirModal);
 }
 
 if (btnFecharModal) {

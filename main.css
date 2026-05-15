@@ -1065,6 +1065,30 @@ td {
     max-height: 250px;
 }
 
+#btn-fab-nova-transacao {
+    display: none;
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background-color: #059669;
+    color: white;
+    font-size: 1.75rem;
+    font-weight: 300;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(5, 150, 105, 0.45);
+    z-index: 99;
+    line-height: 1;
+}
+
+#btn-fab-nova-transacao:active {
+    background-color: #047857;
+    transform: scale(0.95);
+}
+
 .bottom-nav {
     display: none;
     position: fixed;
@@ -1173,5 +1197,11 @@ td {
 
     .bottom-nav {
         display: flex;
+    }
+
+    #btn-fab-nova-transacao {
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 }
